@@ -1,6 +1,6 @@
 # public_api_request
 
-#Awesome Startup Company app
+# Awesome Startup Company app
 
 This app is built for the Awesome Startup company who has remote employees working all over the world needing a better way to share contact information. 
 
