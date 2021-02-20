@@ -1,3 +1,6 @@
+//Variables that hold the URL 
+const employees = 'https://randomuser.me/api/?results=12&nat=us';
+console.log(employees);
 
 /**
  * Global Variables for creating DOM elements 
@@ -17,37 +20,37 @@ searchDiv.insertAdjacentHTML('beforeend', `
 //gallary markup
 const gallery = document.getElementById('gallery');
 console.log(gallery);
-gallery.insertAdjacentHTML('beforeend', `
-    <div class="card">
-        <div class="card-img-container">
-            <img class="card-img" src="https://placehold.it/90x90" alt="profile picture"> 
-        </div>
-        <div class="card-info-container">
-            <h3 id="name" class="card-name cap">first last</h3>
-            <p class="card-text">email</p>
-            <p class="card-text cap">city, state, </p>
-        </div>
-    </div>
-`)
+// gallery.insertAdjacentHTML('beforeend', `
+//     <div class="card">
+//         <div class="card-img-container">
+//             <img class="card-img" src="https://placehold.it/90x90" alt="profile picture"> 
+//         </div>
+//         <div class="card-info-container">
+//             <h3 id="name" class="card-name cap">first last</h3>
+//             <p class="card-text">email</p>
+//             <p class="card-text cap">city, state, </p>
+//         </div>
+//     </div>
+// `)
 
 //modal markup
 const modalContainer = document.createElement('div');
 document.querySelector('body').appendChild(modalContainer);
 console.log(modalContainer);
-modalContainer.insertAdjacentHTML('beforeend', `
-    <div class="modal">
-        <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-        <div class="modal-info-container">
-        <img class="modal-img" src="https://placehold.it/125x125" alt="profile picture">
-        <h3 id="name" class="modal-name cap">name</h3>
-            <p class="modal-text">email</p> 
-            <p class="modal-text cap">city</p>
-            <hr>
-            <p class="modal-text">(555)-555-5555</p>
-            <p class="modal-text">Birhday: 10/21/2015</p>
-        </div>
-    </div>
-`)
+// modalContainer.insertAdjacentHTML('beforeend', `
+//     <div class="modal">
+//         <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+//         <div class="modal-info-container">
+//         <img class="modal-img" src="https://placehold.it/125x125" alt="profile picture">
+//         <h3 id="name" class="modal-name cap">name</h3>
+//             <p class="modal-text">email</p> 
+//             <p class="modal-text cap">city</p>
+//             <hr>
+//             <p class="modal-text">(555)-555-5555</p>
+//             <p class="modal-text">Birhday: 10/21/2015</p>
+//         </div>
+//     </div>
+// `)
 
 /**
  * Fetch functions
@@ -55,22 +58,49 @@ modalContainer.insertAdjacentHTML('beforeend', `
 */
 function fetchData(url) {
     return fetch(url)
-    .then(checkStatus)
-    .then(data => (console.log(data)))
+            .then(checkStatus)
+            .then(response => response.json())
+            .catch(error => console.log('Looks like something went wrong.', error))
 }
 
 Promise.all([
-    fetchData('https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb?fmt=raw&sole')
+    fetchData(employees)
 ])
+    .then(data => {
+        // generateProfileImage(employees)
+    })
 /**
  * Helper functions
  * 
 */
-function checkStatus(res) {
-    if(res.ok) {
-        return Promise.resolve(res)
+
+function generateProfile(user) {
+    const profile = data.map(item => `
+    <div class="card-info-container">
+         <h3 id="name" class="card-name cap">${item.name}</h3>
+            <p class="card-text">email</p>
+            <p class="card-text cap">city, state, </p>
+    </div>
+    `)
+
+}
+
+function generateProfileImage(user) {
+    const html = `
+        <div class="card">
+            <div class="card-img-container">
+                <img class="card-img" src="${user.picture}"alt="profile picture"> 
+            </div>
+        </div>
+        `
+    gallery.insertAdjacentHTML('beforeend', html);
+}
+console.log(generateProfileImage(employees));
+function checkStatus(response) {
+    if(response.ok) {
+        return Promise.resolve(response)
     } else {
-        return Promise.reject(new Error(res.statusText))
+        return Promise.reject(new Error(response.statusText))
     }
 }
 /**
