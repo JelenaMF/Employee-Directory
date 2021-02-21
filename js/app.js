@@ -1,12 +1,9 @@
-//Variables that hold the URL 
-const employees = 'https://randomuser.me/api/?results=12&nat=us';
-console.log(employees);
-
 /**
  * Global Variables for creating DOM elements 
  * 
-*/
+*********************************************/
 //search markup
+
 const searchDiv = document.querySelector('.search-container');
 searchDiv.insertAdjacentHTML('beforeend', `
     <form action="#" method="GET">
@@ -15,28 +12,94 @@ searchDiv.insertAdjacentHTML('beforeend', `
         <input type="submit" value="Search" id="search-submit" class="search-submit">
     </form>
 `)
- console.log(searchDiv);
 
-//gallary markup
-const gallery = document.getElementById('gallery');
-console.log(gallery);
-// gallery.insertAdjacentHTML('beforeend', `
-//     <div class="card">
-//         <div class="card-img-container">
-//             <img class="card-img" src="https://placehold.it/90x90" alt="profile picture"> 
-//         </div>
-//         <div class="card-info-container">
-//             <h3 id="name" class="card-name cap">first last</h3>
-//             <p class="card-text">email</p>
-//             <p class="card-text cap">city, state, </p>
-//         </div>
-//     </div>
-// `)
+//Variables that hold the URL 
+const employees = 'https://randomuser.me/api/?results=12';
+console.log(employees);
 
 //modal markup
 const modalContainer = document.createElement('div');
 document.querySelector('body').appendChild(modalContainer);
+
 console.log(modalContainer);
+ 
+
+
+/**
+ * Fetch functions
+ * 
+*/
+function fetchData(url){
+    return fetch(url)
+            //.then(results => console.log(data.results))
+            .then(results => results.json())
+            .catch(error => console.log('Looks like there was a problem', error))
+}
+//create a fetch function that fetches employees parsing it to json 
+fetchData(employees) 
+    .then( data => generateProfiles(data.results))
+fetchData(employees)
+   .then(data => generateProfileMods(data.results))
+    
+
+/**
+ * Helper functions
+ * 
+*/
+function generateProfiles(data) {
+    const gallery = document.getElementById('gallery');
+    console.log(gallery);
+    const profile = data.map(data => `
+        <div class="card">
+            <div class="card-img-container">
+                <img class="card-img" src="${data.picture.large}" alt="profile picture"> 
+            </div>
+            <div class="card-info-container">
+                <h3 id="name" class="card-name cap">"${data.name.first} ${data.name.last}"</h3>
+                <p class="card-text">"${data.email}"</p>
+                <p class="card-text cap">"${data.location.city}, ${data.location.state}" </p>
+            </div>
+        </div>`).join('');
+    gallery.insertAdjacentHTML('beforeend', profile)
+}
+
+function generateProfileMods(data) {
+    const employee = data.map(item => `
+    <div class="modal">
+            <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+            <div class="modal-info-container">
+            <img class="modal-img" src="${data.picture.thumbnail} alt="profile picture">
+            <h3 id="name" class="modal-name cap">"${data.name.first} ${data.name.last}"</h3>
+                <p class="modal-text">"${data.email}"</p> 
+                <p class="modal-text cap">"${data.location.city}"</p>
+                <hr>
+                <p class="modal-text">("${data.phone}"</p>
+                <p class="modal-text">Birhday: "${data.dob.date}"</p>
+            </div>
+    </div>
+    `)
+    modalContainer.insertAdjacentHTML('beforeend', employee)
+}
+function checkStatus(response) {
+    if(response.ok) {
+        return Promise.resolve(response)
+    } else {
+        return Promise.reject(new Error(response.statusText))
+    }
+}
+
+/**
+ * Event listeners 
+ * 
+*/
+
+
+/**
+ * post data
+ * 
+*/
+
+
 // modalContainer.insertAdjacentHTML('beforeend', `
 //     <div class="modal">
 //         <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
@@ -51,65 +114,3 @@ console.log(modalContainer);
 //         </div>
 //     </div>
 // `)
-
-/**
- * Fetch functions
- * 
-*/
-function fetchData(url) {
-    return fetch(url)
-            .then(checkStatus)
-            .then(response => response.json())
-            .catch(error => console.log('Looks like something went wrong.', error))
-}
-
-Promise.all([
-    fetchData(employees)
-])
-    .then(data => {
-        // generateProfileImage(employees)
-    })
-/**
- * Helper functions
- * 
-*/
-
-function generateProfile(user) {
-    const profile = data.map(item => `
-    <div class="card-info-container">
-         <h3 id="name" class="card-name cap">${item.name}</h3>
-            <p class="card-text">email</p>
-            <p class="card-text cap">city, state, </p>
-    </div>
-    `)
-
-}
-
-function generateProfileImage(user) {
-    const html = `
-        <div class="card">
-            <div class="card-img-container">
-                <img class="card-img" src="${user.picture}"alt="profile picture"> 
-            </div>
-        </div>
-        `
-    gallery.insertAdjacentHTML('beforeend', html);
-}
-console.log(generateProfileImage(employees));
-function checkStatus(response) {
-    if(response.ok) {
-        return Promise.resolve(response)
-    } else {
-        return Promise.reject(new Error(response.statusText))
-    }
-}
-/**
- * Event listeners 
- * 
-*/
-
-
-/**
- * post data
- * 
-*/
