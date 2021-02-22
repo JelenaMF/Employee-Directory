@@ -14,14 +14,12 @@ searchDiv.insertAdjacentHTML('beforeend', `
 `)
 
 //Variables that hold the URL 
-const employees = 'https://randomuser.me/api/?results=12';
+const employees = 'https://randomuser.me/api/?results=12&nat=us';
 console.log(employees);
 
 //modal markup
-const modalContainer = document.createElement('div');
-document.querySelector('body').appendChild(modalContainer);
 
-console.log(modalContainer);
+// modalContainer.style.display = 'none';
  
 
 
@@ -31,16 +29,19 @@ console.log(modalContainer);
 */
 function fetchData(url){
     return fetch(url)
-            //.then(results => console.log(data.results))
             .then(results => results.json())
             .catch(error => console.log('Looks like there was a problem', error))
 }
+
 //create a fetch function that fetches employees parsing it to json 
 fetchData(employees) 
     .then( data => generateProfiles(data.results))
-fetchData(employees)
-   .then(data => generateProfileMods(data.results))
-    
+    .then(data => {
+        const card = document.querySelector('.card');
+        card.addEventListener('click', generateProfileMods);
+    })
+      
+
 
 /**
  * Helper functions
@@ -55,31 +56,38 @@ function generateProfiles(data) {
                 <img class="card-img" src="${data.picture.large}" alt="profile picture"> 
             </div>
             <div class="card-info-container">
-                <h3 id="name" class="card-name cap">"${data.name.first} ${data.name.last}"</h3>
-                <p class="card-text">"${data.email}"</p>
-                <p class="card-text cap">"${data.location.city}, ${data.location.state}" </p>
+                <h3 id="name" class="card-name cap">${data.name.first} ${data.name.last}</h3>
+                <p class="card-text">${data.email}</p>
+                <p class="card-text cap">${data.location.city}, ${data.location.state} </p>
             </div>
         </div>`).join('');
     gallery.insertAdjacentHTML('beforeend', profile)
 }
-
+const card = document.querySelector('.card');
 function generateProfileMods(data) {
-    const employee = data.map(item => `
-    <div class="modal">
-            <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-            <div class="modal-info-container">
-            <img class="modal-img" src="${data.picture.thumbnail} alt="profile picture">
-            <h3 id="name" class="modal-name cap">"${data.name.first} ${data.name.last}"</h3>
-                <p class="modal-text">"${data.email}"</p> 
-                <p class="modal-text cap">"${data.location.city}"</p>
+    const modalContainer = document.createElement('div');
+    document.querySelector('body').appendChild(modalContainer);
+// console.log(modalContainer);
+    const employee = data => `
+        <div class="modal-container">
+            <div class="modal">
+                <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                <div class="modal-info-container">
+                <img class="modal-img" src=${data.picture.large} alt="profile picture">
+                <h3 id="name" class="modal-name cap">${data.name.first} ${data.name.last}</h3>
+                    <p class="modal-text">${data.email}</p> 
+                    <p class="modal-text cap">${data.location.city}</p>
                 <hr>
-                <p class="modal-text">("${data.phone}"</p>
-                <p class="modal-text">Birhday: "${data.dob.date}"</p>
-            </div>
-    </div>
-    `)
-    modalContainer.insertAdjacentHTML('beforeend', employee)
+                    <p class="modal-text">${data.phone}</p>
+                    <p class="modal-text">Birhday: ${data.dob.date.slice(5,7)}/${data.dob.date.slice(8,10)}/${data.dob.date.slice(0,4)}</p>
+                </div>
+            </div>    
+        </div>
+    `;
+    console.log(employee);
+    modalContainer.insertAdjacentHTML('beforeend', employee);
 }
+
 function checkStatus(response) {
     if(response.ok) {
         return Promise.resolve(response)
@@ -93,12 +101,16 @@ function checkStatus(response) {
  * 
 */
 
-
 /**
  * post data
  * 
 */
+// function pullProfile(e){
+//     e.preventDefault();
+//     fetchData(employees)
+//     .then(data => generateProfileMods(data.results));
 
+// }
 
 // modalContainer.insertAdjacentHTML('beforeend', `
 //     <div class="modal">
