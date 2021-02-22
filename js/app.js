@@ -63,11 +63,11 @@ function generateProfiles(data) {
         </div>`).join('');
     gallery.insertAdjacentHTML('beforeend', profile)
 }
-const card = document.querySelector('.card');
-function generateProfileMods(data) {
+    
+function generateProfileMods() {
     const modalContainer = document.createElement('div');
     document.querySelector('body').appendChild(modalContainer);
-// console.log(modalContainer);
+        console.log(modalContainer);
     const employee = data => `
         <div class="modal-container">
             <div class="modal">
@@ -79,13 +79,16 @@ function generateProfileMods(data) {
                     <p class="modal-text cap">${data.location.city}</p>
                 <hr>
                     <p class="modal-text">${data.phone}</p>
-                    <p class="modal-text">Birhday: ${data.dob.date.slice(5,7)}/${data.dob.date.slice(8,10)}/${data.dob.date.slice(0,4)}</p>
+                    <p class="modal-text">Birhday: ${data.dob.date}/${data.dob.date}/${data.dob.date}</p>
                 </div>
             </div>    
         </div>
     `;
     console.log(employee);
     modalContainer.insertAdjacentHTML('beforeend', employee);
+    const buttonX = document.querySelector('.modal-close-btn');
+    buttonX.addEventListener('click', () => {modalContainer.style.display = 'none'});
+    console.log(buttonX);
 }
 
 function checkStatus(response) {
