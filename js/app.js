@@ -40,8 +40,11 @@ async function fetchData(url){
 fetchData(employees) 
     .then( data => generateProfiles(data.results))
     .then(data => {
-        const card = document.querySelector('.card');
-        card.addEventListener('click', generateProfileMods);
+        const cards = document.querySelectorAll('.card');
+        for(const card of cards) {
+            card.addEventListener('click', generateProfileMods);
+        }
+       
     })
       
 
@@ -65,13 +68,15 @@ function generateProfiles(data) {
             </div>
         </div>`).join('');
     gallery.insertAdjacentHTML('beforeend', profile)
+  
+  
 }
-const card = document.querySelector('.card');
+
 function generateProfileMods(data) {
     const modalContainer = document.createElement('div');
     document.querySelector('body').appendChild(modalContainer);
 // console.log(modalContainer);
-    const employee = data => `
+    const employee = `
         <div class="modal-container">
             <div class="modal">
                 <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
@@ -88,7 +93,18 @@ function generateProfileMods(data) {
         </div>
     `;
     console.log(employee);
-    modalContainer.insertAdjacentHTML('beforeend', employee);
+    console.log(document.querySelector(".modal-img"));    modalContainer.insertAdjacentHTML('beforeend', employee);
+    const xBtn = document.querySelector('.modal-close-btn');
+    xBtn.addEventListener('click', (e) => {
+        modalContainer.style.display = 'none'})
+}
+
+function createModElement(element) {
+    return document.createElement(element);
+}
+
+function append(parent, el){
+    return parent.appendChild(el);
 }
 
 function checkStatus(response) {
