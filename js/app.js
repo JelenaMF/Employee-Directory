@@ -27,21 +27,20 @@ console.log(employees);
  * Fetch functions
  * 
 */
-function fetchData(url){
-    return fetch(url)
-            .then(results => results.json())
-            .catch(error => console.log('Looks like there was a problem', error))
+async function fetchData(url){
+    try {
+        const results = await fetch(url);
+        return await results.json();
+    } catch (error) {
+        return console.log('Looks like there was a problem', error);
+    }
 }
 
 //create a fetch function that fetches employees parsing it to json 
 fetchData(employees) 
     .then( data => generateProfiles(data.results))
-    .then(data => {
-        const card = document.querySelector('.card');
-        card.addEventListener('click', generateProfileMods);
-    })
-      
-
+    .then(data => generateProfileMods(data))
+    .then(results => addClick(results))
 
 /**
  * Helper functions
@@ -68,27 +67,44 @@ function generateProfileMods() {
     const modalContainer = document.createElement('div');
     document.querySelector('body').appendChild(modalContainer);
         console.log(modalContainer);
-    const employee = data => `
-        <div class="modal-container">
-            <div class="modal">
-                <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-                <div class="modal-info-container">
-                <img class="modal-img" src=${data.picture.large} alt="profile picture">
-                <h3 id="name" class="modal-name cap">${data.name.first} ${data.name.last}</h3>
-                    <p class="modal-text">${data.email}</p> 
-                    <p class="modal-text cap">${data.location.city}</p>
-                <hr>
-                    <p class="modal-text">${data.phone}</p>
-                    <p class="modal-text">Birhday: ${data.dob.date}/${data.dob.date}/${data.dob.date}</p>
-                </div>
-            </div>    
-        </div>
-    `;
-    console.log(employee);
-    modalContainer.insertAdjacentHTML('beforeend', employee);
+    modalContainer.insertAdjacentHTML('beforeend', `
+    <div class="modal-container">
+        <div class="modal">
+            <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+            <div class="modal-info-container">
+            
+            </div>
+        </div>    
+    </div>
+`);
     const buttonX = document.querySelector('.modal-close-btn');
+    modalContainer.style.display = 'none'
     buttonX.addEventListener('click', () => {modalContainer.style.display = 'none'});
     console.log(buttonX);
+}
+
+function updateMod(emp) {
+   const modalInfo = document.querySelector('.modal-info-container');
+   modalInfo.innerHTML = '';
+   modalInfo.insertAdjacentHTML('afterend', `
+   <img class="modal-img" src=${emp.picture.large} alt="profile picture">
+   <h3 id="name" class="modal-name cap">${emp.name.first} ${emp.name.last}</h3>
+       <p class="modal-text">${emp.email}</p> 
+       <p class="modal-text cap">${data.location.city}</p>
+   <hr>
+       <p class="modal-text">${emp.phone}</p>
+       <p class="modal-text">Birhday: ${emp.dob.date}</p>
+   `)
+}
+
+function addClick(results) {
+    const cards = document.querySelectorAll('.card');
+    for(const profileCards of cards) {
+        profileCards.addEventListener('click', () => {
+            document.querySelector('.modal-container').style.display = '';
+            updateMod(profileCards);
+        });
+    }
 }
 
 function checkStatus(response) {
@@ -99,10 +115,7 @@ function checkStatus(response) {
     }
 }
 
-/**
- * Event listeners 
- * 
-*/
+
 
 /**
  * post data
