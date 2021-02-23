@@ -29,7 +29,8 @@ async function fetchData(url){
         return console.log('Looks like there was a problem', error);
     }
 }
-
+//change this to just a fetch removing the above fetchdata function and parse
+//JSON after the cards are created 
 //create a fetch function that fetches employees parsing it to json 
 fetchData(employees) 
     .then( data => {
