@@ -27,10 +27,13 @@ console.log(employees);
  * Fetch functions
  * 
 */
-function fetchData(url){
-    return fetch(url)
-            .then(results => results.json())
-            .catch(error => console.log('Looks like there was a problem', error))
+async function fetchData(url){
+    try {
+        const results = await fetch(url);
+        return await results.json();
+    } catch (error) {
+        return console.log('Looks like there was a problem', error);
+    }
 }
 
 //create a fetch function that fetches employees parsing it to json 
