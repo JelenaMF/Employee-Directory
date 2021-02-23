@@ -17,12 +17,6 @@ searchDiv.insertAdjacentHTML('beforeend', `
 const employees = 'https://randomuser.me/api/?results=12&nat=us';
 console.log(employees);
 
-//modal markup
-
-// modalContainer.style.display = 'none';
- 
-
-
 /**
  * Fetch functions
  * 
@@ -38,17 +32,39 @@ async function fetchData(url){
 
 //create a fetch function that fetches employees parsing it to json 
 fetchData(employees) 
-    .then( data => generateProfiles(data.results))
-    .then(data => {
+    .then( data => {
+        generateProfiles(data.results)
+        const modalContainer = document.createElement('div');
+        document.querySelector('body').appendChild(modalContainer);
+        const modalContent = `
+            <div class="modal">
+                <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                <div class="modal-info-container">
+                   
+                </div>
+            </div> 
+                <div class="modal-btn-container">
+                    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+                </div>
+        `;
+        modalContainer.insertAdjacentHTML('beforeend', modalContent);
+        modalContainer.style.display = 'none';
+
+        const xBtn = document.querySelector('.modal-close-btn');
+        xBtn.addEventListener('click', (e) => {
+            modalContainer.style.display = 'none'})
+
+        console.log(modalContainer);
         const cards = document.querySelectorAll('.card');
         for(const card of cards) {
-            card.addEventListener('click', generateProfileMods);
+            card.addEventListener('click', (e) => {
+                modalContainer.style.display = '';
+                generateModInfo(data);
+            });
         }
-       
     })
-      
-
-
+       
 /**
  * Helper functions
  * 
@@ -68,45 +84,19 @@ function generateProfiles(data) {
             </div>
         </div>`).join('');
     gallery.insertAdjacentHTML('beforeend', profile)
-  
-  
 }
 
-function generateProfileMods(data) {
-    const modalContainer = document.createElement('div');
-    document.querySelector('body').appendChild(modalContainer);
-// console.log(modalContainer);
-    const employee = `
-        <div class="modal-container">
-            <div class="modal">
-                <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-                <div class="modal-info-container">
-                <img class="modal-img" src=${data.picture.large} alt="profile picture">
-                <h3 id="name" class="modal-name cap">${data.name.first} ${data.name.last}</h3>
-                    <p class="modal-text">${data.email}</p> 
-                    <p class="modal-text cap">${data.location.city}</p>
-                <hr>
-                    <p class="modal-text">${data.phone}</p>
-                    <p class="modal-text">Birhday: ${data.dob.date.slice(5,7)}/${data.dob.date.slice(8,10)}/${data.dob.date.slice(0,4)}</p>
-                </div>
-            </div>    
-        </div>
-    `;
-    console.log(employee);
-    console.log(document.querySelector(".modal-img"));    modalContainer.insertAdjacentHTML('beforeend', employee);
-    const xBtn = document.querySelector('.modal-close-btn');
-    xBtn.addEventListener('click', (e) => {
-        modalContainer.style.display = 'none'})
+function generateModInfo(emp) {
+    const empDetails = `
+        <img class="modal-img" src="${emp.picture.large}" alt="profile picture">
+        <h3 id="name" class="modal-name cap">${emp.name.first} ${emp.name.last}</h3>
+        <p class="modal-text">${emp.email}</p> 
+        <p class="modal-text cap">${emp.location.city}</p>
+        <hr>
+        <p class="modal-text">(555)-555-5555</p>
+        <p class="modal-text">Birhday: 10/21/2015</p>`;
+       return empDetails;
 }
-
-function createModElement(element) {
-    return document.createElement(element);
-}
-
-function append(parent, el){
-    return parent.appendChild(el);
-}
-
 function checkStatus(response) {
     if(response.ok) {
         return Promise.resolve(response)
