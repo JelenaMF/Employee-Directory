@@ -40,14 +40,14 @@ async function fetchData(url){
 
 //create a fetch function that fetches employees parsing it to json 
 fetchData(employees) 
-    .then( data => {
-        generateProfiles(data.results)})
+    .then(data => data)
     .then(data => {
+        generateProfiles(data.results)
         const cards = document.querySelectorAll('.card');
         for(const card of cards) {
-// Add click handlers to cards so that clicking card displays modal and adds employee specific data
+    // Add click handlers to cards so that clicking card displays modal and adds employee specific data
             card.addEventListener('click', (e) =>{ 
-                console.log(generateProfileMods(data))
+                generateProfileMods(data)
             
             } );
 
@@ -80,13 +80,13 @@ function generateProfileMods(data) {
     <div class="modal">
     <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
     <div class="modal-info-container">
-    <img class="modal-img" src=${data.picture.large} alt="profile picture">
-    <h3 id="name" class="modal-name cap">${data.name.first} ${data.name.last}</h3>
-        <p class="modal-text">${data.email}</p> 
-        <p class="modal-text cap">${data.location.city}</p>
+    <img class="modal-img" src=${data} alt="profile picture">
+    <h3 id="name" class="modal-name cap">${data} </h3>
+        <p class="modal-text">${data}</p> 
+        <p class="modal-text cap">${data}</p>
     <hr>
-        <p class="modal-text">${data.phone}</p>
-        <p class="modal-text">Birhday: ${data.dob.date.slice(5,7)}/${data.dob.date.slice(8,10)}/${data.dob.date.slice(0,4)}</p>
+        <p class="modal-text">${data}</p>
+        <p class="modal-text">Birhday: ${data}</p>
     </div>
 </div> 
     <div class="modal-btn-container">
@@ -99,7 +99,8 @@ function generateProfileMods(data) {
     modal.style.display = 'none';
     const xBtn = document.querySelector('.modal-close-btn');
     xBtn.addEventListener('click', (e) => {
-        modal.style.display = 'none'}) 
+        modal.style.display = 'none';
+    }) 
 }
 
 function checkStatus(response) {
