@@ -4,6 +4,7 @@
 *********************************************/
 const gallery = document.getElementById('gallery');
 console.log(gallery);
+const empProfiles = [];
 //search markup
 
 const searchDiv = document.querySelector('.search-container');
@@ -36,17 +37,17 @@ async function fetchData(url){
 fetchData(employees) 
     .then(data => data)
     .then(data => {
-        generateProfiles(data.results)
-        generateProfileMods(data.results)
-        callCard( data  )
+        generateProfiles(data.results);
+        generateProfileMods(data.results);
     })
+    .then(data => callCard( data))
       
 /**
  * Helper functions
  * 
 */
 function generateProfiles(data) {
-
+    empProfiles.push(data)
     const profile = data.map(data => `
         <div class="card">
             <div class="card-img-container">
@@ -59,8 +60,6 @@ function generateProfiles(data) {
             </div>
         </div>`).join('');
     gallery.insertAdjacentHTML('beforeend', profile)
-    
-
     
 }
 
@@ -81,25 +80,25 @@ function generateProfileMods(data) {
     `);
     const modal = document.querySelector('.modal-container');
     modal.style.display = 'none';
-    updateMod(data)
     const xBtn = document.querySelector('.modal-close-btn');
-    xBtn.addEventListener('click', (e) => {
-        modal.style.display = 'none';
-    }) 
+    console.log(xBtn);
+    xBtn.addEventListener('click', () => {modalContainer.style.display = 'none'});
+   console.log(modal);
 }
 // Create update modal function that accepts one parameter, 
 //which will be an employee object
 function updateMod(emp) {
     let modalInfo = document.querySelector('.modal-info-container');
+    console.log(modalInfo);
     modalInfo.innerHTML = '';
     modalInfo.insertAdjacentHTML('afterbegin', `
-        <img class="modal-img" src=${emp.picture.large} alt="profile picture">
-        <h3 id="name" class="modal-name cap">${emp.name} </h3>
-            <p class="modal-text">${emp.email}</p> 
-            <p class="modal-text cap">${emp.location.city}</p>
+        <img class="modal-img" src=${emp} alt="profile picture">
+        <h3 id="name" class="modal-name cap">${emp} </h3>
+            <p class="modal-text">${emp}</p> 
+            <p class="modal-text cap">${emp}</p>
         <hr>
-            <p class="modal-text">${data}</p>
-            <p class="modal-text">Birhday: ${data}</p>
+            <p class="modal-text">${emp}</p>
+            <p class="modal-text">Birhday: ${emp}</p>
     `)
 }
 
@@ -115,7 +114,7 @@ function checkStatus(response) {
  * Event listeners 
  * 
 */
-function callCard(){
+function callCard(data){
 const cards = document.querySelectorAll('.card');
 console.log(cards);
     for(const card of cards) {
@@ -123,7 +122,7 @@ console.log(cards);
         card.addEventListener('click', (e) =>{ 
             generateProfileMods(card)   
             const modal = document.querySelector('.modal-container');
-            modal.style.display = '';
+            //modal.style.display = '';
             
             updateMod(card);
         } );
