@@ -39,7 +39,7 @@ fetchData(employees)
     .then(data => {
         generateProfiles(data.results);
         generateProfileMods(data.results);
-        callCard(data.results)
+        callCard(data)
     })
 
       
@@ -90,11 +90,10 @@ function generateProfileMods(data) {
 // Create update modal function that accepts one parameter, 
 //which will be an employee object
 function updateMod(emp) {
-    let modalInfo = document.querySelector('.modal-info-container');
-    console.log(emp);
+    const modalInfo = document.querySelector('.modal-info-container');
     modalInfo.innerHTML = '';
     modalInfo.insertAdjacentHTML('afterbegin', `
-        <img class="modal-img" src=${emp.img} alt="profile picture">
+        <img class="modal-img" src=${emp.picture.large} alt="profile picture">
         <h3 id="name" class="modal-name cap">${emp} </h3>
             <p class="modal-text">${emp}</p> 
             <p class="modal-text cap">${emp}</p>
@@ -102,7 +101,8 @@ function updateMod(emp) {
             <p class="modal-text">${emp}</p>
             <p class="modal-text">Birhday: ${emp}</p>
     `)
-   
+   console.log(modalInfo);
+   console.log(emp);
 }
 
 function checkStatus(response) {
@@ -122,14 +122,13 @@ const cards = document.querySelectorAll('.card');
 console.log(cards);
     for(const card of cards) {
 // Add click handlers to cards so that clicking card displays modal and adds employee specific data
-        card.addEventListener('click', (e) =>{ 
+        card.addEventListener('click', () =>{ 
             generateProfileMods(card)   
             const modal = document.querySelector('.modal-container');
             //modal.style.display = '';
+           console(updateMod(data)) ;
             
-            updateMod(card);
-            
-          console.log(data);
+          //console.log(data);
         } );
         
     }
