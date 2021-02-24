@@ -39,7 +39,7 @@ fetchData(employees)
     .then(data => {
         generateProfiles(data.results);
         generateProfileMods(data.results);
-        callCard(data)
+        callCard(data.results)
     })
 
       
@@ -102,7 +102,7 @@ function updateMod(emp) {
             <p class="modal-text">${emp}</p>
             <p class="modal-text">Birhday: ${emp}</p>
     `)
-    return emp;
+   
 }
 
 function checkStatus(response) {
@@ -125,9 +125,9 @@ console.log(cards);
         card.addEventListener('click', (e) =>{ 
             generateProfileMods(card)   
             const modal = document.querySelector('.modal-container');
-            modal.style.display = '';
+            //modal.style.display = '';
             
-            updateMod(data);
+            updateMod(card);
             
           console.log(data);
         } );
