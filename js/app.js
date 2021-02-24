@@ -39,8 +39,9 @@ fetchData(employees)
     .then(data => {
         generateProfiles(data.results);
         generateProfileMods(data.results);
+        callCard(data)
     })
-    .then(data => callCard( data))
+
       
 /**
  * Helper functions
@@ -60,7 +61,7 @@ function generateProfiles(data) {
             </div>
         </div>`).join('');
     gallery.insertAdjacentHTML('beforeend', profile)
-    
+    console.log(data);
 }
 
 function generateProfileMods(data) {
@@ -81,18 +82,19 @@ function generateProfileMods(data) {
     const modal = document.querySelector('.modal-container');
     modal.style.display = 'none';
     const xBtn = document.querySelector('.modal-close-btn');
-    console.log(xBtn);
+    //console.log(xBtn);
     xBtn.addEventListener('click', () => {modalContainer.style.display = 'none'});
    console.log(modal);
+   console.log(data);
 }
 // Create update modal function that accepts one parameter, 
 //which will be an employee object
 function updateMod(emp) {
     let modalInfo = document.querySelector('.modal-info-container');
-    console.log(modalInfo);
+    console.log(emp);
     modalInfo.innerHTML = '';
     modalInfo.insertAdjacentHTML('afterbegin', `
-        <img class="modal-img" src=${emp} alt="profile picture">
+        <img class="modal-img" src=${emp.img} alt="profile picture">
         <h3 id="name" class="modal-name cap">${emp} </h3>
             <p class="modal-text">${emp}</p> 
             <p class="modal-text cap">${emp}</p>
@@ -100,6 +102,7 @@ function updateMod(emp) {
             <p class="modal-text">${emp}</p>
             <p class="modal-text">Birhday: ${emp}</p>
     `)
+    return emp;
 }
 
 function checkStatus(response) {
@@ -122,10 +125,13 @@ console.log(cards);
         card.addEventListener('click', (e) =>{ 
             generateProfileMods(card)   
             const modal = document.querySelector('.modal-container');
-            //modal.style.display = '';
+            modal.style.display = '';
             
-            updateMod(card);
+            updateMod(data);
+            
+          console.log(data);
         } );
+        
     }
 }
 /**
