@@ -123,7 +123,7 @@ console.log(cards);
     for(const card of cards) {
 // Add click handlers to cards so that clicking card displays modal and adds employee specific data
         card.addEventListener('click', () =>{ 
-            generateProfileMods(card)   
+            generateProfileMods(data)   
             const modal = document.querySelector('.modal-container');
             //modal.style.display = '';
            console(updateMod(data)) ;
