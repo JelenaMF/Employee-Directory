@@ -39,7 +39,7 @@ fetchData(employees)
     .then(data => {
         generateProfiles(data.results);
         generateProfileMods(data.results);
-        callCard(data)
+        callCard(data.results)
     })
 
       
@@ -60,7 +60,8 @@ function generateProfiles(data) {
                 <p class="card-text cap">${data.location.city}, ${data.location.state} </p>
             </div>
         </div>`).join('');
-    gallery.insertAdjacentHTML('beforeend', profile)
+    gallery.insertAdjacentHTML('beforeend', profile);
+    //good data 
     console.log(data);
 }
 
@@ -85,6 +86,7 @@ function generateProfileMods(data) {
     //console.log(xBtn);
     xBtn.addEventListener('click', () => {modalContainer.style.display = 'none'});
    console.log(modal);
+   //good data 
    console.log(data);
 }
 // Create update modal function that accepts one parameter, 
@@ -94,7 +96,7 @@ function updateMod(emp) {
     modalInfo.innerHTML = '';
     modalInfo.insertAdjacentHTML('afterbegin', `
         <img class="modal-img" src=${emp.picture.large} alt="profile picture">
-        <h3 id="name" class="modal-name cap">${emp} </h3>
+        <h3 id="name" class="modal-name cap">${emp.name.first} </h3>
             <p class="modal-text">${emp}</p> 
             <p class="modal-text cap">${emp}</p>
         <hr>
@@ -120,13 +122,17 @@ function checkStatus(response) {
 function callCard(data){
 const cards = document.querySelectorAll('.card');
 console.log(cards);
-    for(const card of cards) {
+//iterate through the cards list
+    for(const [i, card ]of cards.entries()) {
+        console.log(i, card);
+
 // Add click handlers to cards so that clicking card displays modal and adds employee specific data
         card.addEventListener('click', () =>{ 
-            generateProfileMods(data)   
+            console.log(data[i]);  
             const modal = document.querySelector('.modal-container');
-            //modal.style.display = '';
-           console(updateMod(data)) ;
+            modal.style.display = '';
+            generateProfileMods(data) 
+           updateMod(data[i]);
             
           //console.log(data);
         } );
