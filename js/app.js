@@ -43,15 +43,8 @@ fetchData(employees)
     .then(data => data)
     .then(data => {
         generateProfiles(data.results)
-        const cards = document.querySelectorAll('.card');
-        for(const card of cards) {
-    // Add click handlers to cards so that clicking card displays modal and adds employee specific data
-            card.addEventListener('click', (e) =>{ 
-                generateProfileMods(data)
-            
-            } );
 
-        }
+        callCard(   )
     })
       
 /**
@@ -72,6 +65,9 @@ function generateProfiles(data) {
             </div>
         </div>`).join('');
     gallery.insertAdjacentHTML('beforeend', profile)
+    
+
+    
 }
 
 function generateProfileMods(data) {
@@ -80,13 +76,7 @@ function generateProfileMods(data) {
     <div class="modal">
     <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
     <div class="modal-info-container">
-    <img class="modal-img" src=${data} alt="profile picture">
-    <h3 id="name" class="modal-name cap">${data} </h3>
-        <p class="modal-text">${data}</p> 
-        <p class="modal-text cap">${data}</p>
-    <hr>
-        <p class="modal-text">${data}</p>
-        <p class="modal-text">Birhday: ${data}</p>
+   
     </div>
 </div> 
     <div class="modal-btn-container">
@@ -102,6 +92,21 @@ function generateProfileMods(data) {
         modal.style.display = 'none';
     }) 
 }
+// Create update modal function that accepts one parameter, 
+//which will be an employee object
+function updateMod(emp) {
+    let modalInfo = document.querySelector('.modal-info-container');
+    modalInfo.innerHTML = '';
+    modalInfo.insertAdjacentHTML('afterbegin', `
+        <img class="modal-img" src=${emp.picture.large} alt="profile picture">
+        <h3 id="name" class="modal-name cap">${emp.name} </h3>
+            <p class="modal-text">${emp.email}</p> 
+            <p class="modal-text cap">${emp.location.city}</p>
+        <hr>
+            <p class="modal-text">${data}</p>
+            <p class="modal-text">Birhday: ${data}</p>
+    `)
+}
 
 function checkStatus(response) {
     if(response.ok) {
@@ -115,7 +120,20 @@ function checkStatus(response) {
  * Event listeners 
  * 
 */
-
+function callCard(){
+const cards = document.querySelectorAll('.card');
+console.log(cards);
+    for(const card of cards) {
+// Add click handlers to cards so that clicking card displays modal and adds employee specific data
+        card.addEventListener('click', (e) =>{ 
+            generateProfileMods(card)   
+            const modal = document.querySelector('.modal-container');
+            //modal.style.display = '';
+            
+            updateMod(card);
+        } );
+    }
+}
 /**
  * post data
  * 
