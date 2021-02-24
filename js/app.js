@@ -19,12 +19,6 @@ searchDiv.insertAdjacentHTML('beforeend', `
 const employees = 'https://randomuser.me/api/?results=12&nat=us';
 console.log(employees);
 
-//modal markup
-
-// modalContainer.style.display = 'none';
- 
-
-
 /**
  * Fetch functions
  * 
@@ -43,8 +37,8 @@ fetchData(employees)
     .then(data => data)
     .then(data => {
         generateProfiles(data.results)
-
-        callCard(   )
+        generateProfileMods(data.results)
+        callCard( data  )
     })
       
 /**
@@ -87,6 +81,7 @@ function generateProfileMods(data) {
     `);
     const modal = document.querySelector('.modal-container');
     modal.style.display = 'none';
+    updateMod(data)
     const xBtn = document.querySelector('.modal-close-btn');
     xBtn.addEventListener('click', (e) => {
         modal.style.display = 'none';
@@ -128,7 +123,7 @@ console.log(cards);
         card.addEventListener('click', (e) =>{ 
             generateProfileMods(card)   
             const modal = document.querySelector('.modal-container');
-            //modal.style.display = '';
+            modal.style.display = '';
             
             updateMod(card);
         } );
