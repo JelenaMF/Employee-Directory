@@ -61,8 +61,7 @@ function generateProfiles(data) {
             </div>
         </div>`).join('');
     gallery.insertAdjacentHTML('beforeend', profile);
-    //good data 
-    console.log(data);
+   
 }
 
 function generateProfileMods(data) {
@@ -83,37 +82,53 @@ function generateProfileMods(data) {
     const modal = document.querySelector('.modal-container');
     modal.style.display = 'none';
     const xBtn = document.querySelector('.modal-close-btn');
-    //console.log(xBtn);
-    xBtn.addEventListener('click', () => {modalContainer.style.display = 'none'});
-   console.log(modal);
-   //good data 
-   console.log(data);
+    xBtn.addEventListener('click', () => {modal.style.display = 'none'});
+
+    //target the previous and next button 
+
+     const prevBttn = document.querySelector('.modal-prev');
+    //create an eventlister for 
+    prevBttn.addEventListener('click', () => {
+
+        console.log("previous button clicked");
+          
+    })
+     const nextBttn = document.querySelector('.modal-next');
+         nextBttn.addEventListener('click', () => {
+             console.log('nxt bttn clicked')
+          })
+
 }
 // Create update modal function that accepts one parameter, 
 //which will be an employee object
 function updateMod(emp) {
+    const date = new Date (`${emp.dob.date}`);
+    const month = date.getMonth() + 1,
+        day = date.getDate(),
+        year = date.getFullYear();
+    const dstr = `${month}/${day}/${year}`; 
     const modalInfo = document.querySelector('.modal-info-container');
     modalInfo.innerHTML = '';
     modalInfo.insertAdjacentHTML('afterbegin', `
         <img class="modal-img" src=${emp.picture.large} alt="profile picture">
-        <h3 id="name" class="modal-name cap">${emp.name.first} </h3>
-            <p class="modal-text">${emp}</p> 
-            <p class="modal-text cap">${emp}</p>
+        <h3 id="name" class="modal-name cap">${emp.name.first} ${emp.name.first}</h3>
+            <p class="modal-text">${emp.email}</p> 
+            <p class="modal-text cap">${emp.phone}</p>
         <hr>
-            <p class="modal-text">${emp}</p>
-            <p class="modal-text">Birhday: ${emp}</p>
+            <p class="modal-text">${emp.location.street.number} ${emp.location.street.name} 
+            ${emp.location.city} ${emp.location.state}</p>
+            <p class="modal-text">Birhday: ${dstr}</p>
     `)
-   console.log(modalInfo);
-   console.log(emp);
+  
 }
 
-function checkStatus(response) {
-    if(response.ok) {
-        return Promise.resolve(response)
-    } else {
-        return Promise.reject(new Error(response.statusText))
-    }
-}
+// function checkStatus(response) {
+//     if(response.ok) {
+//         return Promise.resolve(response)
+//     } else {
+//         return Promise.reject(new Error(response.statusText))
+//     }
+// }
 
 /**
  * Event listeners 
@@ -131,12 +146,10 @@ console.log(cards);
             console.log(data[i]);  
             const modal = document.querySelector('.modal-container');
             modal.style.display = '';
-            generateProfileMods(data) 
            updateMod(data[i]);
-            
-          //console.log(data);
-        } );
-        
+   
+        });
+ 
     }
 }
 /**
