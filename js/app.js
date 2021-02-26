@@ -88,7 +88,7 @@ function updateMod(emp) {
     const month = date.getMonth() + 1,
         day = date.getDate(),
         year = date.getFullYear();
-    const dstr = `${month}/${day}/${year}`; 
+    const mmddyy = `${month}/${day}/${year}`; 
     const modalInfo = document.querySelector('.modal-info-container');
     modalInfo.innerHTML = '';
     modalInfo.insertAdjacentHTML('afterbegin', `
@@ -99,10 +99,13 @@ function updateMod(emp) {
         <hr>
             <p class="modal-text">${emp.location.street.number} ${emp.location.street.name} 
             ${emp.location.city} ${emp.location.state}</p>
-            <p class="modal-text">Birhday: ${dstr}</p>
+            <p class="modal-text">Birhday: ${mmddyy}</p>
     `)
   
 }
+
+
+
 
 /**
  * Event listeners 
@@ -110,52 +113,77 @@ function updateMod(emp) {
 */
 function callCard(data){
 const cards = document.querySelectorAll('.card');
-const prevBttn = document.querySelector('.modal-prev');
-    prevBttn.setAttribute('disabled', true);
-const nextBttn = document.querySelector('.modal-next');
-    nextBttn.setAttribute('disabled', true);
+ const prevBttn = document.querySelector('.modal-prev');
+//     prevBttn.setAttribute('disabled', true);
+ const nextBttn = document.querySelector('.modal-next');
+//     nextBttn.setAttribute('disabled', true);
     for(const [i, card ]of cards.entries()) {
-        card.addEventListener('click', () => { 
+        
+        card.addEventListener('click', (e) => { 
+            const currentCard = e.currentTarget;
             const modal = document.querySelector('.modal-container');
             modal.style.display = '';
             updateMod(data[i]);
             
-       //target the previous and next button 
+            prevBttn.addEventListener('click', (e) => {
+                //add conditional statement that disables the prevBttn 
+                //if currentCard is the first index 
+                if(currentCard == card[i]) {
+                 //set attribute to disable true for previous button
+                 prevBttn.setAttribute('disabled', true); 
+                //set attribute to disable false for next button
+                nextBttn.setAttribute('disabled', false);
+                console.log('current card is the first');
+                }
+              
+                console.log(`this is the previous ${currentCard} card`);
+                console.log(currentCard);
+            });
+            nextBttn.addEventListener('click', (e) => {
+                console.log(`this is the next ${currentCard} card`);
+                console.log(currentCard);
+            });
+        });
+   
+    }
+
+function prev(data){
+    
+    //start position
+    // if(i == 1) {
+    //     prevBttn.setAttribute('disabled', true);
+    //     nextBttn.setAttribute('disabled', false);
+    // } else {
+    //     i--;
+    //     return setNewCard();
+    // }
+}
+
+function next(data){    
+    // if(i == 12) {
+    //     nextBttn.setAttribute('disabled', true);
+    //     prevBttn.setAttribute('disabled', false);
+    // } else {
+    //     i++;
+    //     return setNewCard(card);
+    // }
+}
+function setNewCard(data){
+    //change card 
+    
+    console.log('new card');
+
+}
+           //target the previous and next button 
 
        //create an eventlister for 
        prevBttn.addEventListener('click', () => {
-           //if current card modal is the first card 
-           if( cards.indexOf(0) === 0) {
-                //enable next button
-               nextBttn.setAttribute('disabled', false);
-        //else if current card modal is not the first card 
-            //remove disabled attribute on previous button 
-            //display previous modal card
-           } else {
-               prevBttn.disabled = false;
-               //display previous card in modal
-               updateMod(data[i]);
+        prev(data);
+       
 
-           }
-           console.log("previous button clicked");
-             
-       })
-            nextBttn.addEventListener('click', () => {
-            //if current card is the last card 
-                //remove disabled attribute on previous button 
-                if(data[i] === 11) {
-                    prevBttn.disabled = false;
-                    
-            //else if current card is not the last card 
-                //enable next button
-                //display next card modal 
-                } else {
-                    nextBttn.disabled = false;
-                    //show next card
-                }
-                console.log('nxt bttn clicked')
-             })
-        });
-    }
+    });
+     nextBttn.addEventListener('click', (e) => {
+         next(data)
+     });
 }
 
