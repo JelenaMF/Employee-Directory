@@ -3,8 +3,6 @@
  * 
 *********************************************/
 const gallery = document.getElementById('gallery');
-console.log(gallery);
-const empProfiles = [];
 //search markup
 
 const searchDiv = document.querySelector('.search-container');
@@ -16,9 +14,7 @@ searchDiv.insertAdjacentHTML('beforeend', `
     </form>
 `)
 
-//Variables that hold the URL 
 const employees = 'https://randomuser.me/api/?results=12&nat=us';
-console.log(employees);
 
 /**
  * Fetch functions
@@ -35,8 +31,7 @@ async function fetchData(url){
 
 //create a fetch function that fetches employees parsing it to json 
 fetchData(employees) 
-    .then(data => data)
-    .then(data => {
+        .then(data => {
         generateProfiles(data.results);
         generateProfileMods(data.results);
         callCard(data.results)
@@ -47,7 +42,8 @@ fetchData(employees)
  * Helper functions
  * 
 */
-function generateProfiles(data) {
+function generateProfiles(data) {const empProfiles = [];
+
     empProfiles.push(data)
     const profile = data.map(data => `
         <div class="card">
@@ -84,23 +80,9 @@ function generateProfileMods(data) {
     const xBtn = document.querySelector('.modal-close-btn');
     xBtn.addEventListener('click', () => {modal.style.display = 'none'});
 
-    //target the previous and next button 
-
-     const prevBttn = document.querySelector('.modal-prev');
-    //create an eventlister for 
-    prevBttn.addEventListener('click', () => {
-
-        console.log("previous button clicked");
-          
-    })
-     const nextBttn = document.querySelector('.modal-next');
-         nextBttn.addEventListener('click', () => {
-             console.log('nxt bttn clicked')
-          })
-
 }
-// Create update modal function that accepts one parameter, 
-//which will be an employee object
+
+//function for creating 
 function updateMod(emp) {
     const date = new Date (`${emp.dob.date}`);
     const month = date.getMonth() + 1,
@@ -122,38 +104,58 @@ function updateMod(emp) {
   
 }
 
-// function checkStatus(response) {
-//     if(response.ok) {
-//         return Promise.resolve(response)
-//     } else {
-//         return Promise.reject(new Error(response.statusText))
-//     }
-// }
-
 /**
  * Event listeners 
  * 
 */
 function callCard(data){
 const cards = document.querySelectorAll('.card');
-console.log(cards);
-//iterate through the cards list
+const prevBttn = document.querySelector('.modal-prev');
+    prevBttn.setAttribute('disabled', true);
+const nextBttn = document.querySelector('.modal-next');
+    nextBttn.setAttribute('disabled', true);
     for(const [i, card ]of cards.entries()) {
-        console.log(i, card);
-
-// Add click handlers to cards so that clicking card displays modal and adds employee specific data
-        card.addEventListener('click', () =>{ 
-            console.log(data[i]);  
+        card.addEventListener('click', () => { 
             const modal = document.querySelector('.modal-container');
             modal.style.display = '';
-           updateMod(data[i]);
-   
+            updateMod(data[i]);
+            
+       //target the previous and next button 
+
+       //create an eventlister for 
+       prevBttn.addEventListener('click', () => {
+           //if current card modal is the first card 
+           if( cards.indexOf(0) === 0) {
+                //enable next button
+               nextBttn.setAttribute('disabled', false);
+        //else if current card modal is not the first card 
+            //remove disabled attribute on previous button 
+            //display previous modal card
+           } else {
+               prevBttn.disabled = false;
+               //display previous card in modal
+               updateMod(data[i]);
+
+           }
+           console.log("previous button clicked");
+             
+       })
+            nextBttn.addEventListener('click', () => {
+            //if current card is the last card 
+                //remove disabled attribute on previous button 
+                if(data[i] === 11) {
+                    prevBttn.disabled = false;
+                    
+            //else if current card is not the last card 
+                //enable next button
+                //display next card modal 
+                } else {
+                    nextBttn.disabled = false;
+                    //show next card
+                }
+                console.log('nxt bttn clicked')
+             })
         });
- 
     }
 }
-/**
- * post data
- * 
-*/
 
