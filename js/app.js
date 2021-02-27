@@ -92,7 +92,7 @@ function updateMod(emp) {
     modalInfo.innerHTML = '';
     modalInfo.insertAdjacentHTML('afterbegin', `
         <img class="modal-img" src=${emp.picture.large} alt="profile picture">
-        <h3 id="name" class="modal-name cap">${emp.name.first} ${emp.name.first}</h3>
+        <h3 id="name" class="modal-name cap">${emp.name.first} ${emp.name.last}</h3>
             <p class="modal-text">${emp.email}</p> 
             <p class="modal-text cap">${emp.phone}</p>
         <hr>
@@ -122,16 +122,20 @@ const cards = document.querySelectorAll('.card');
             updateMod(data[i]);
             console.log(modal.value = i);
            if(modal.value ===  0)   {
-            prevBttn.setAttribute('disabled', true); 
-            nextBttn.removeAttribute('disabled')
-           console.log(updateMod(data[i])); 
-       } else {
-           prevBttn.removeAttribute('disabled')
-       }
+                prevBttn.setAttribute('disabled', true); 
+                nextBttn.removeAttribute('disabled')
+            } else {
+                prevBttn.removeAttribute('disabled')
+            }
+            if(modal.value === 11) {
+                nextBttn.setAttribute('disabled', true);
+            }
                 
             prevBttn.addEventListener('click', (e) => {
-                const currentCard = e.target;
-                console.log(currentCard);
+                modal.style.display = '';
+                const currentCard =  updateMod(data[i]);
+                //console.log(currentCard);
+                return modal.innerHTML = currentCard;
                 //add conditional statement that disables the prevBttn 
                 //if currentCard is the first index 
           
@@ -148,6 +152,7 @@ const cards = document.querySelectorAll('.card');
 
             nextBttn.addEventListener('click', (e) => {
                // console.log(`this is the next ${currentCard} card`);
+               
                console.log('current button click is next');
             });
         });
