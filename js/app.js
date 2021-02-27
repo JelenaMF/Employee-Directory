@@ -13,12 +13,14 @@ searchDiv.insertAdjacentHTML('beforeend', `
         <input type="submit" value="Search" id="search-submit" class="search-submit">
     </form>
 `)
-
+const searchButton = document.querySelector('.search-submit');
+console.log(searchButton);
+const searchInput = document.querySelector('.search-input');
 const employees = 'https://randomuser.me/api/?results=12&nat=us';
 
 /**
  * Fetch functions
- * 
+ * fetches the API data 
 */
 async function fetchData(url){
     try {
@@ -40,10 +42,18 @@ fetchData(employees)
       
 /**
  * Helper functions
+ * @generateProfile() function grabs employee data from API 
+ * and iterates through the list grabbing pictures, first/last names, email, city/state
+ * and appends it to the gallery
  * 
+ * @generateProfileMods() function creates a modal container that gets appended to the gallery
+ * @updateModal function grabs the information from the API and appends it to the modal container 
 */
 function generateProfiles(data) {
-  
+    //an empty array to append ethe current list of employees for the search bar. 
+    // const profiles = [];
+    // profiles.push(data);
+    // console.log(profiles);
     const profile = data.map(data => `
         <div class="card">
             <div class="card-img-container">
@@ -81,7 +91,6 @@ function generateProfileMods(data) {
 
 }
 
-//function for creating 
 function updateMod(emp) {
     const date = new Date (`${emp.dob.date}`);
     const month = date.getMonth() + 1,
@@ -105,22 +114,29 @@ function updateMod(emp) {
 
 
 
-
 /**
  * Event listeners 
  * 
 */
 function callCard(data){
-const cards = document.querySelectorAll('.card');
- const prevBttn = document.querySelector('.modal-prev');
- const nextBttn = document.querySelector('.modal-next');
+    //an empty array to append ethe current list of employees for the search bar. 
+    const profiles = [];
+    profiles.push(data);
+    console.log(profiles);
+    const prevBttn = document.querySelector('.modal-prev');
+    const nextBttn = document.querySelector('.modal-next');
+    const modal = document.querySelector('.modal-container');
+    const modalInfoId = document.querySelector('.modal-info-container').id;
+    const cards = document.querySelectorAll('.card');
+ 
     for(const [i, card] of cards.entries()) {
         
         card.addEventListener('click', (e) => { 
-            const modal = document.querySelector('.modal-container');
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
+     //add conditional statement that disables the prevBttn 
+
            if(modal.value ===  0)   {
                 prevBttn.setAttribute('disabled', true); 
                 nextBttn.removeAttribute('disabled')
@@ -133,21 +149,15 @@ const cards = document.querySelectorAll('.card');
                 
             prevBttn.addEventListener('click', (e) => {
                 modal.style.display = '';
-                const currentCard =  updateMod(data[i]);
+                const currentCard =  modal.value;
                 //console.log(currentCard);
                 return modal.innerHTML = currentCard;
-                //add conditional statement that disables the prevBttn 
                 //if currentCard is the first index 
           
                  //set attribute to disable true for previous button
                 // prevBttn.setAttribute('disabled', false); 
                 //set attribute to disable false for next button
                 //nextBttn.setAttribute('disabled', false);
-                console.log('current card is the first');
-                
-              
-                console.log(`this is the previous ${data[i]} card`);
-                console.log(currentCard);
             });
 
             nextBttn.addEventListener('click', (e) => {
@@ -159,6 +169,22 @@ const cards = document.querySelectorAll('.card');
    
     }
 
+    searchButton.addEventListener('click', () => {
+        // const matches = [];
+        // const filter = searchInput.value.toLowerCase();
+        // console.log('search button clicked');
+        // for(let i = 0; i <= cards.length; i++) {
+        //     const employeeProf = cards[i];
+        //     //console.log(employeeProf);
+        //     const employee = employeeProf.querySelector('h3');
+        //     console.log(employee);
+        //     employeeProf.style.display = 'none';
+        //     if(employee.includes(filter)) {
+        //         matches.push(employeeProf);
+        //     }
+
+        // }
+    });
 // function prev(data){
     
     //start position
