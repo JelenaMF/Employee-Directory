@@ -42,9 +42,8 @@ fetchData(employees)
  * Helper functions
  * 
 */
-function generateProfiles(data) {const empProfiles = [];
-
-    empProfiles.push(data)
+function generateProfiles(data) {
+  
     const profile = data.map(data => `
         <div class="card">
             <div class="card-img-container">
@@ -114,40 +113,48 @@ function updateMod(emp) {
 function callCard(data){
 const cards = document.querySelectorAll('.card');
  const prevBttn = document.querySelector('.modal-prev');
-//     prevBttn.setAttribute('disabled', true);
  const nextBttn = document.querySelector('.modal-next');
-//     nextBttn.setAttribute('disabled', true);
-    for(const [i, card ]of cards.entries()) {
+    for(const [i, card] of cards.entries()) {
         
         card.addEventListener('click', (e) => { 
-            const currentCard = e.currentTarget;
             const modal = document.querySelector('.modal-container');
             modal.style.display = '';
             updateMod(data[i]);
-            
+            console.log(modal.value = i);
+           if(modal.value ===  0)   {
+            prevBttn.setAttribute('disabled', true); 
+            nextBttn.removeAttribute('disabled')
+           console.log(updateMod(data[i])); 
+       } else {
+           prevBttn.removeAttribute('disabled')
+       }
+                
             prevBttn.addEventListener('click', (e) => {
+                const currentCard = e.target;
+                console.log(currentCard);
                 //add conditional statement that disables the prevBttn 
                 //if currentCard is the first index 
-                if(currentCard == card[i]) {
+          
                  //set attribute to disable true for previous button
-                 prevBttn.setAttribute('disabled', true); 
+                // prevBttn.setAttribute('disabled', false); 
                 //set attribute to disable false for next button
-                nextBttn.setAttribute('disabled', false);
+                //nextBttn.setAttribute('disabled', false);
                 console.log('current card is the first');
-                }
+                
               
-                console.log(`this is the previous ${currentCard} card`);
+                console.log(`this is the previous ${data[i]} card`);
                 console.log(currentCard);
             });
+
             nextBttn.addEventListener('click', (e) => {
-                console.log(`this is the next ${currentCard} card`);
-                console.log(currentCard);
+               // console.log(`this is the next ${currentCard} card`);
+               console.log('current button click is next');
             });
         });
    
     }
 
-function prev(data){
+// function prev(data){
     
     //start position
     // if(i == 1) {
@@ -157,9 +164,9 @@ function prev(data){
     //     i--;
     //     return setNewCard();
     // }
-}
+// }
 
-function next(data){    
+// function next(data){    
     // if(i == 12) {
     //     nextBttn.setAttribute('disabled', true);
     //     prevBttn.setAttribute('disabled', false);
@@ -167,23 +174,23 @@ function next(data){
     //     i++;
     //     return setNewCard(card);
     // }
-}
-function setNewCard(data){
-    //change card 
+// }
+// function setNewCard(data){
+//     //change card 
     
-    console.log('new card');
+//     console.log('new card');
 
-}
+// }
            //target the previous and next button 
 
        //create an eventlister for 
-       prevBttn.addEventListener('click', () => {
-        prev(data);
+    //    prevBttn.addEventListener('click', () => {
+    //     prev(data);
        
 
-    });
-     nextBttn.addEventListener('click', (e) => {
-         next(data)
-     });
+    // });
+    //  nextBttn.addEventListener('click', (e) => {
+    //      next(data)
+    //  });
 }
 
