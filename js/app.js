@@ -111,42 +111,40 @@ function updateMod(emp) {
   
 }
 let liveCard = 1;
-const modalInfo = document.querySelector('.modal-info-container');
 
-function prev() {
-    const modal = document.querySelector('.modal-container');
+function prev(card) {
     const prevBttn = document.querySelector('.modal-prev');
     const nextBttn = document.querySelector('.modal-next');
      //add conditional statement that disables the prevBttn 
         //if currentCard is the first index 
-    if(modal.value ===  0)   {
+    if(card ===  0)   {
     //set attribute to disable true for previous button
         prevBttn.setAttribute('disabled', true); 
     //set attribute to disable false for next button
         nextBttn.removeAttribute('disabled')
     } else {
-        prevBttn.removeAttribute('disabled')
         liveCard--;
+        console.log(liveCard);
         return setCard();
         }
 }
 
-function next() {
+function next(card) {
     const nextBttn = document.querySelector('.modal-next');
+    const prevBttn = document.querySelector('.modal-prev');
     const modal = document.querySelector('.modal-container');
-    if(modal.value === 11) {
+    if(card === 11) {
         nextBttn.setAttribute('disabled', true);
+        prevBttn.removeAttribute('disabled');
     }  else {
-        nextBttn.removeAttribute('disabled');
-        liveCard++;
+        liveCard++
         return setCard();
     }
 }
 
-function setCard() {
-    const modalInfo = document.querySelector('.modal-info-container');
-
-    return modalInfo.innerHTML = liveCard;
+function setCard(currentCard) {
+    const modal = document.querySelector('.modal-container');
+    return modal.innerHTML = updateMod(currentCard);
 }
 
 /**
@@ -161,18 +159,29 @@ function callCard(data){
     const prevBttn = document.querySelector('.modal-prev');
     const nextBttn = document.querySelector('.modal-next');
     const modal = document.querySelector('.modal-container');
+    const modalInfo = document.querySelector('.modal-info-container');
     const cards = document.querySelectorAll('.card');
- 
+    
     for(const [i, card] of cards.entries()) {
-        
+       
         card.addEventListener('click', (e) => { 
             modal.style.display = '';
             updateMod(data[i]);
-            console.log(modal.value = i);
+            let modalValue = modal.value;
+            modalValue = i;
+            prev();
             next();
             for(let i = 0; i < profiles.length; i++) {
             prevBttn.addEventListener('click', (e) => {
-                prev();
+                
+                const currentCard =  modal.id;
+                console.log(currentCard);
+                if(profiles[i] < currentCard) {
+                    modal.style.display = '';
+                    modal.innerHTML = updateModal(profiles[i]);
+                }
+                    console.log(profiles[i]);
+
                 });
 
             }
