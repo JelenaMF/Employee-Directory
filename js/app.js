@@ -156,13 +156,13 @@ function callCard(data){
                    modal.innerHTML = updateMod(profile[i]);
                 });
 
-                nextBttn.addEventListener('click', (e) => {
+                // nextBttn.addEventListener('click', (e) => {
                     
-                    console.log(profile.indexOf(data[i]));
-                    modal.style.display = '';
-                    modal.innerHTML = updateMod(data[i]);
-                console.log('current button click is next');
-                });
+                //     console.log(profile.indexOf(data[i]));
+                //     modal.style.display = '';
+                //     modal.innerHTML = updateMod(data[i]);
+                // console.log('current button click is next');
+                // });
             }
         });
    
