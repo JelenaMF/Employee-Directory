@@ -110,42 +110,8 @@ function updateMod(emp) {
     `)
   
 }
-let liveCard = 1;
 
-function prev(card) {
-    const prevBttn = document.querySelector('.modal-prev');
-    const nextBttn = document.querySelector('.modal-next');
-     //add conditional statement that disables the prevBttn 
-        //if currentCard is the first index 
-    if(card ===  0)   {
-    //set attribute to disable true for previous button
-        prevBttn.setAttribute('disabled', true); 
-    //set attribute to disable false for next button
-        nextBttn.removeAttribute('disabled')
-    } else {
-        liveCard--;
-        console.log(liveCard);
-        return setCard();
-        }
-}
 
-function next(card) {
-    const nextBttn = document.querySelector('.modal-next');
-    const prevBttn = document.querySelector('.modal-prev');
-    const modal = document.querySelector('.modal-container');
-    if(card === 11) {
-        nextBttn.setAttribute('disabled', true);
-        prevBttn.removeAttribute('disabled');
-    }  else {
-        liveCard++
-        return setCard();
-    }
-}
-
-function setCard(currentCard) {
-    const modal = document.querySelector('.modal-container');
-    return modal.innerHTML = updateMod(currentCard);
-}
 
 /**
  * Event listeners 
@@ -161,38 +127,43 @@ function callCard(data){
     const modal = document.querySelector('.modal-container');
     const modalInfo = document.querySelector('.modal-info-container');
     const cards = document.querySelectorAll('.card');
-    
+ 
     for(const [i, card] of cards.entries()) {
-       
+        
         card.addEventListener('click', (e) => { 
             modal.style.display = '';
             updateMod(data[i]);
-            let modalValue = modal.value;
-            modalValue = i;
-            prev();
-            next();
-            for(let i = 0; i < profiles.length; i++) {
-            prevBttn.addEventListener('click', (e) => {
-                
-                const currentCard =  modal.id;
-                console.log(currentCard);
-                if(profiles[i] < currentCard) {
-                    modal.style.display = '';
-                    modal.innerHTML = updateModal(profiles[i]);
-                }
-                    console.log(profiles[i]);
+            console.log(modal.value = i);
+     //add conditional statement that disables the prevBttn 
+        //if currentCard is the first index 
+           if(modal.value ===  0)   {
+        //set attribute to disable true for previous button
+                prevBttn.setAttribute('disabled', true); 
+        //set attribute to disable false for next button
 
+                nextBttn.removeAttribute('disabled')
+            } else {
+                prevBttn.removeAttribute('disabled')
+            }
+            if(modal.value === 11) {
+                nextBttn.setAttribute('disabled', true);
+            }  
+            for(const profile of profiles) {
+                prevBttn.addEventListener('click', (e) => {
+                    
+                    console.log(profile);
+                    modal.style.display = '';
+                   modal.innerHTML = updateMod(profile[i]);
                 });
 
+                nextBttn.addEventListener('click', (e) => {
+                    
+                    console.log(profile.indexOf(data[i]));
+                    modal.style.display = '';
+                    modal.innerHTML = updateMod(data[i]);
+                console.log('current button click is next');
+                });
             }
-                
-           
-
-            nextBttn.addEventListener('click', (e) => {
-               // console.log(`this is the next ${currentCard} card`);
-               
-               console.log('current button click is next');
-            });
         });
    
     }
