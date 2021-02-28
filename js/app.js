@@ -42,12 +42,11 @@ fetchData(employees)
       
 /**
  * Helper functions
- * @generateProfile() function grabs employee data from API 
- * and iterates through the list grabbing pictures, first/last names, email, city/state
- * and appends it to the gallery
+ * generateProfile() function grabs employee data from API 
  * 
- * @generateProfileMods() function creates a modal container that gets appended to the gallery
- * @updateModal function grabs the information from the API and appends it to the modal container 
+ * @para data JSON object
+ * @param emp JSON object
+ * 
 */
 function generateProfiles(data) {
     //an empty array to append ethe current list of employees for the search bar. 
@@ -69,7 +68,7 @@ function generateProfiles(data) {
    
 }
 
-function generateProfileMods(data) {
+function generateProfileMods() {
     gallery.insertAdjacentHTML('beforeend', `
     <div class="modal-container">
     <div class="modal">
@@ -111,12 +110,48 @@ function updateMod(emp) {
     `)
   
 }
+let liveCard = 1;
+const modalInfo = document.querySelector('.modal-info-container');
 
+function prev() {
+    const modal = document.querySelector('.modal-container');
+    const prevBttn = document.querySelector('.modal-prev');
+    const nextBttn = document.querySelector('.modal-next');
+     //add conditional statement that disables the prevBttn 
+        //if currentCard is the first index 
+    if(modal.value ===  0)   {
+    //set attribute to disable true for previous button
+        prevBttn.setAttribute('disabled', true); 
+    //set attribute to disable false for next button
+        nextBttn.removeAttribute('disabled')
+    } else {
+        prevBttn.removeAttribute('disabled')
+        liveCard--;
+        return setCard();
+        }
+}
 
+function next() {
+    const nextBttn = document.querySelector('.modal-next');
+    const modal = document.querySelector('.modal-container');
+    if(modal.value === 11) {
+        nextBttn.setAttribute('disabled', true);
+    }  else {
+        nextBttn.removeAttribute('disabled');
+        liveCard++;
+        return setCard();
+    }
+}
+
+function setCard() {
+    const modalInfo = document.querySelector('.modal-info-container');
+
+    return modalInfo.innerHTML = liveCard;
+}
 
 /**
  * Event listeners 
- * 
+ * @param data JSONobject
 */
 function callCard(data){
     //an empty array to append ethe current list of employees for the search bar. 
@@ -126,7 +161,6 @@ function callCard(data){
     const prevBttn = document.querySelector('.modal-prev');
     const nextBttn = document.querySelector('.modal-next');
     const modal = document.querySelector('.modal-container');
-    const modalInfoId = document.querySelector('.modal-info-container').id;
     const cards = document.querySelectorAll('.card');
  
     for(const [i, card] of cards.entries()) {
@@ -135,30 +169,15 @@ function callCard(data){
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
-     //add conditional statement that disables the prevBttn 
+            next();
+            for(let i = 0; i < profiles.length; i++) {
+            prevBttn.addEventListener('click', (e) => {
+                prev();
+                });
 
-           if(modal.value ===  0)   {
-                prevBttn.setAttribute('disabled', true); 
-                nextBttn.removeAttribute('disabled')
-            } else {
-                prevBttn.removeAttribute('disabled')
-            }
-            if(modal.value === 11) {
-                nextBttn.setAttribute('disabled', true);
             }
                 
-            prevBttn.addEventListener('click', (e) => {
-                modal.style.display = '';
-                const currentCard =  modal.value;
-                //console.log(currentCard);
-                return modal.innerHTML = currentCard;
-                //if currentCard is the first index 
-          
-                 //set attribute to disable true for previous button
-                // prevBttn.setAttribute('disabled', false); 
-                //set attribute to disable false for next button
-                //nextBttn.setAttribute('disabled', false);
-            });
+           
 
             nextBttn.addEventListener('click', (e) => {
                // console.log(`this is the next ${currentCard} card`);
