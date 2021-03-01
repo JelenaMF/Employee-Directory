@@ -2,22 +2,22 @@
  * Global Variables for creating DOM elements 
  * 
 *********************************************/
-// const gallery = document.getElementById('gallery');
-// let profiles = [];
-// let currentCard = 0;
-// //search markup
+const gallery = document.getElementById('gallery');
+let profiles = [];
+let currentCard = 0;
+//search markup
 
-// const searchDiv = document.querySelector('.search-container');
-// searchDiv.insertAdjacentHTML('beforeend', `
-//     <form action="#" method="GET">
-//         <input type="search" id="search-input"
-//         class="search-input" placeholder="Search...">
-//         <input type="submit" value="Search" id="search-submit" class="search-submit">
-//     </form>
-// `)
-// const searchButton = document.querySelector('.search-submit');
-// console.log(searchButton);
-// const searchInput = document.querySelector('.search-input');
+const searchDiv = document.querySelector('.search-container');
+searchDiv.insertAdjacentHTML('beforeend', `
+    <form action="#" method="GET">
+        <input type="search" id="search-input"
+        class="search-input" placeholder="Search...">
+        <input type="submit" value="Search" id="search-submit" class="search-submit">
+    </form>
+`)
+const searchButton = document.querySelector('.search-submit');
+console.log(searchButton);
+const searchInput = document.querySelector('.search-input');
 const employees = 'https://randomuser.me/api/?results=12&nat=us';
 
 /**
@@ -75,7 +75,10 @@ function generateProfileMods() {
    
     </div>
 </div> 
-  
+    <div class="modal-btn-container">
+    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+    </div>
 </div>
     `);
     const modal = document.querySelector('.modal-container');
@@ -107,6 +110,7 @@ function updateMod(emp) {
 
 function renderCardItem(data) {
     updateMod(data);
+    
 }
 
 function renderCard() {
@@ -142,8 +146,8 @@ function nextCard() {
 function callCard(data){
     //an empty array to append ethe current list of employees for the search bar. 
     
-    //profiles.push(data);
-    //console.log(profiles);
+    profiles.push(data);
+    console.log(profiles);
     // let currentCard = 0;
     const prevBttn = document.querySelector('.modal-prev');
     const nextBttn = document.querySelector('.modal-next');
@@ -157,7 +161,6 @@ function callCard(data){
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
-            //console.log(renderCard());   
             console.log(currentCard);
             if (modal.value === 0) {
                 prevBttn.setAttribute('disabled', true);
@@ -169,7 +172,7 @@ function callCard(data){
         });
 
         nextBttn.addEventListener('click', (e) => {
-            modalInfo.style.display = '';
+            modal.style.display = '';
             nextCard();
             console.log('current button click is next');
             if(modal.value === 11) {
@@ -180,6 +183,23 @@ function callCard(data){
         });
    
     }
+
+    // searchButton.addEventListener('click', () => {
+    //     // const matches = [];
+    //      const filter = searchInput.value.toLowerCase();
+    //     // console.log('search button clicked');
+    //     for(let i = 0; i <= profiles.length; i++) {
+    //         const employeeProf = profiles[i];
+    //         console.log(employeeProf);
+    //         const employee = employeeProf.querySelector('h3');
+    //         console.log(employee);
+    //         employeeProf.style.display = 'none';
+    //         if(employee.includes(filter)) {
+    //             matches.push(employeeProf);
+    //         }
+
+    //     }
+    // });
 
 }
 
