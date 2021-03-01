@@ -118,7 +118,6 @@ function renderCard() {
     const html = renderCardItem(empProfile);
     console.log(empProfile);
     console.log(html);
-    document.querySelector('.modal-info-container').innerHTML = html;
 }
 
 function prevCard() {
@@ -161,11 +160,15 @@ function callCard(data){
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
+            //console.log(renderCard());   
             console.log(currentCard);
-            if (modal.value === 0) {
+            if (modal.value == 0) {
                 prevBttn.setAttribute('disabled', true);
             }
-
+            if(modal.value == 11) {
+                nextBttn.setAttribute('disabled', true);
+                prevBttn.removeAttribute('disabled');
+            }
         prevBttn.addEventListener('click', (e) => {
             modal.style.display = '';
             prevCard();
@@ -175,9 +178,7 @@ function callCard(data){
             modal.style.display = '';
             nextCard();
             console.log('current button click is next');
-            if(modal.value === 11) {
-                nextBttn.setAttribute('disabled', true);
-            }
+            
          });
         
         });
