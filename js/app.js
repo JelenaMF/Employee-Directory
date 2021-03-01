@@ -39,6 +39,8 @@ fetchData(employees)
         generateProfiles(data.results);
         generateProfileMods(data.results);
         callCard(data.results)
+        profiles = data.results;
+       
     }) 
 
       
@@ -113,12 +115,13 @@ function updateMod(emp) {
 }
 
 function renderCardItem(card) {
-    return updateMod(card);
+    console.log(generateProfileMods(card));
+    console.log(generateProfileMods(card));
 }
 
 function renderCard() {
-    let empProfile = profiles[currentCard];
-    let html = renderCardItem(empProfile);
+    const empProfile = profiles[currentCard];
+    const html = renderCardItem(empProfile);
 
     document.querySelector('.modal-container').innerHTML = html;
 }
@@ -167,8 +170,8 @@ function callCard(data){
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
-            //renderCard();   
-
+            //console.log(renderCard());   
+            console.log(currentCard);
             if (modal.value === 0) {
                 prevBttn.setAttribute('disabled', true);
             }
@@ -177,14 +180,14 @@ function callCard(data){
             }
         prevBttn.addEventListener('click', (e) => {
             modalInfo.style.display = 'none';
-            console.log(prevCard());
+            console.log(prevCard(currentCard));
 
 
         
                 });
 
         nextBttn.addEventListener('click', (e) => {
-            console.log(nextCard(cards));
+            console.log(nextCard(data));
                 console.log('current button click is next');
                 });
         
