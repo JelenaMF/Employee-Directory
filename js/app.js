@@ -39,7 +39,7 @@ fetchData(employees)
         generateProfiles(data.results);
         generateProfileMods(data.results);
         callCard(data.results)
-        profiles = data.results;
+        //profiles = data.results;
        
     }) 
 
@@ -53,10 +53,6 @@ fetchData(employees)
  * 
 */
 function generateProfiles(data) {
-    //an empty array to append ethe current list of employees for the search bar. 
-    // const profiles = [];
-    // profiles.push(data);
-    // console.log(profiles);
     const profile = data.map(data => `
         <div class="card">
             <div class="card-img-container">
@@ -115,8 +111,8 @@ function updateMod(emp) {
 }
 
 function renderCardItem(card) {
-    console.log(generateProfileMods(card));
-    console.log(generateProfileMods(card));
+    generateProfileMods();
+    updateMod();
 }
 
 function renderCard() {
@@ -129,7 +125,7 @@ function renderCard() {
 function prevCard(card) {
     //add conditional statement that disables the prevBttn 
         //if currentCard is the first index 
-    if(profiles > 0) {
+    if(currentCard > 0) {
         //set attribute to disable true for previous button
         document.querySelector('.modal-prev').setAttribute('disabled', true);
         //remove attribute disable for next button
@@ -180,14 +176,14 @@ function callCard(data){
             }
         prevBttn.addEventListener('click', (e) => {
             modalInfo.style.display = 'none';
-            console.log(prevCard(currentCard));
+            console.log(prevCard(data));
 
 
         
                 });
 
         nextBttn.addEventListener('click', (e) => {
-            console.log(nextCard(data));
+           console.log(nextCard(data));
                 console.log('current button click is next');
                 });
         
