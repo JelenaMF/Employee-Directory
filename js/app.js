@@ -45,7 +45,7 @@ fetchData(employees)
  * generateProfile() function grabs employee data from API 
  * 
  * @para data JSON object
- * @param emp JSON object
+ * @para emp JSON object
  * 
 */
 function generateProfiles(data) {
@@ -111,8 +111,35 @@ function updateMod(emp) {
   
 }
 
+function prevCard(card) {
+   // let button = e.target;
+    //add conditional statement that disables the prevBttn 
+        //if currentCard is the first index 
+    if(card.value === 0) {
+        //set attribute to disable true for previous button
+        document.querySelector('.modal-prev').setAttribute('disabled', true);
+        //remove attribute disable for next button
+        document.querySelector('.modal-next').remmoveAttribute('disabled');
+    } else {
+        //remove the value number when previous button is clicked
+        card.value--;    
+        return setCard(card);
+    }
+}
 
+function nextCard(card) {
+    if(card.value === 11) {
+        document.querySelector('.modal-next').setAttribute('disabled', true);
+        document.querySelector('.modal-prev').removeAttribute('disabled');
+    }  else {
+        card.value--;
+        return setCard(card)
+    }
+}
 
+function setCard(card) {
+    document.querySelector('.modal-info-container').innerHTML = updateMod(card)
+}
 /**
  * Event listeners 
  * @param data JSONobject
@@ -134,35 +161,20 @@ function callCard(data){
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
-     //add conditional statement that disables the prevBttn 
-        //if currentCard is the first index 
-           if(modal.value ===  0)   {
-        //set attribute to disable true for previous button
-                prevBttn.setAttribute('disabled', true); 
-        //set attribute to disable false for next button
-
-                nextBttn.removeAttribute('disabled')
-            } else {
-                prevBttn.removeAttribute('disabled')
-            }
-            if(modal.value === 11) {
-                nextBttn.setAttribute('disabled', true);
-            }  
-            for(const profile of profiles) {
+           
+            for(let i = 0; i < profiles.length; i++) {
+                console.log(profiles[i]);
                 prevBttn.addEventListener('click', (e) => {
-                    
-                    console.log(profile);
                     modal.style.display = '';
-                   modal.innerHTML = updateMod(profile[i]);
+                    prevCard(card);
+                    console.log(profile);
                 });
 
-                // nextBttn.addEventListener('click', (e) => {
-                    
-                //     console.log(profile.indexOf(data[i]));
-                //     modal.style.display = '';
-                //     modal.innerHTML = updateMod(data[i]);
-                // console.log('current button click is next');
-                // });
+                nextBttn.addEventListener('click', (e) => {
+                    modal.style.display = '';
+                    nextCard(card);
+                console.log('current button click is next');
+                });
             }
         });
    
