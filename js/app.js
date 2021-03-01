@@ -3,6 +3,8 @@
  * 
 *********************************************/
 const gallery = document.getElementById('gallery');
+let profiles = [];
+let currentCard = 0;
 //search markup
 
 const searchDiv = document.querySelector('.search-container');
@@ -37,7 +39,7 @@ fetchData(employees)
         generateProfiles(data.results);
         generateProfileMods(data.results);
         callCard(data.results)
-    })
+    }) 
 
       
 /**
@@ -110,47 +112,52 @@ function updateMod(emp) {
   
 }
 
+function renderCardItem(card) {
+    return updateMod(card);
+}
+
+function renderCard() {
+    let empProfile = profiles[currentCard];
+    let html = renderCardItem(empProfile);
+
+    document.querySelector('.modal-container').innerHTML = html;
+}
+
 function prevCard(card) {
-   // let button = e.target;
     //add conditional statement that disables the prevBttn 
         //if currentCard is the first index 
-    if(card.value === 0) {
+    if(profiles > 0) {
         //set attribute to disable true for previous button
         document.querySelector('.modal-prev').setAttribute('disabled', true);
         //remove attribute disable for next button
         document.querySelector('.modal-next').remmoveAttribute('disabled');
-    } else {
-        //remove the value number when previous button is clicked
-        card.value--;    
-        return setCard(card);
-    }
+        currentCard -= 1
+        renderCard();
+    } 
 }
 
 function nextCard(card) {
-    if(card.value === 11) {
+    if(currentCard < profiles.length - 1) {
         document.querySelector('.modal-next').setAttribute('disabled', true);
         document.querySelector('.modal-prev').removeAttribute('disabled');
-    }  else {
-        card.value++;
-        return setCard(card)
+        currentCard += 1
+        renderCard();
     }
 }
 
-function setCard(card) {
-    document.querySelector('.modal-info-container').innerHTML = updateMod(card);
-}
 /**
  * Event listeners 
  * @param data JSONobject
 */
 function callCard(data){
     //an empty array to append ethe current list of employees for the search bar. 
-    const profiles = [];
+    
     profiles.push(data);
     console.log(profiles);
-    let currentCard = 0;
+    // let currentCard = 0;
     const prevBttn = document.querySelector('.modal-prev');
     const nextBttn = document.querySelector('.modal-next');
+
     const modal = document.querySelector('.modal-container');
     const modalInfo = document.querySelector('.modal-info-container');
     const cards = document.querySelectorAll('.card');
@@ -160,25 +167,24 @@ function callCard(data){
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
-    
+            //renderCard();   
+
+            if (modal.value === 0) {
+                prevBttn.setAttribute('disabled', true);
+            }
+            if(modal.value === 11) {
+                nextBttn.setAttribute('disabled', true);
+            }
         prevBttn.addEventListener('click', (e) => {
             modalInfo.style.display = 'none';
-            const previousEmp = profiles.length - 1;
-            if(currentCard > 0) {
-                currentCard - 1;
-            } else {
-                console.log(previousEmp);
-            }
-            generateProfileMods(profiles[currentCard], card);
+            console.log(prevCard());
 
-                   prevCard(profiles);
-                    //console.log(profiles[i]);
+
+        
                 });
 
         nextBttn.addEventListener('click', (e) => {
-            modal.remove();
-            
-                    nextCard(profiles);
+            console.log(nextCard(cards));
                 console.log('current button click is next');
                 });
         
