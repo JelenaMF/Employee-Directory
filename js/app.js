@@ -87,7 +87,6 @@ function generateProfileMods() {
     modal.style.display = 'none';
     const xBtn = document.querySelector('.modal-close-btn');
     xBtn.addEventListener('click', () => {modal.style.display = 'none'});
-
 }
 
 function updateMod(emp) {
@@ -132,13 +131,13 @@ function nextCard(card) {
         document.querySelector('.modal-next').setAttribute('disabled', true);
         document.querySelector('.modal-prev').removeAttribute('disabled');
     }  else {
-        card.value--;
+        card.value++;
         return setCard(card)
     }
 }
 
 function setCard(card) {
-    document.querySelector('.modal-info-container').innerHTML = updateMod(card)
+    document.querySelector('.modal-info-container').innerHTML = updateMod(card);
 }
 /**
  * Event listeners 
@@ -149,33 +148,40 @@ function callCard(data){
     const profiles = [];
     profiles.push(data);
     console.log(profiles);
+    let currentCard = 0;
     const prevBttn = document.querySelector('.modal-prev');
     const nextBttn = document.querySelector('.modal-next');
     const modal = document.querySelector('.modal-container');
     const modalInfo = document.querySelector('.modal-info-container');
     const cards = document.querySelectorAll('.card');
- 
     for(const [i, card] of cards.entries()) {
         
         card.addEventListener('click', (e) => { 
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
-           
-            for(let i = 0; i < profiles.length; i++) {
-                console.log(profiles[i]);
-                prevBttn.addEventListener('click', (e) => {
-                    modal.style.display = '';
-                    prevCard(card);
-                    console.log(profile);
+    
+        prevBttn.addEventListener('click', (e) => {
+            modalInfo.style.display = 'none';
+            const previousEmp = profiles.length - 1;
+            if(currentCard > 0) {
+                currentCard - 1;
+            } else {
+                console.log(previousEmp);
+            }
+            generateProfileMods(profiles[currentCard], card);
+
+                   prevCard(profiles);
+                    //console.log(profiles[i]);
                 });
 
-                nextBttn.addEventListener('click', (e) => {
-                    modal.style.display = '';
-                    nextCard(card);
+        nextBttn.addEventListener('click', (e) => {
+            modal.remove();
+            
+                    nextCard(profiles);
                 console.log('current button click is next');
                 });
-            }
+        
         });
    
     }
