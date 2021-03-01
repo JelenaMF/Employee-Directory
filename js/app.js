@@ -2,22 +2,22 @@
  * Global Variables for creating DOM elements 
  * 
 *********************************************/
-const gallery = document.getElementById('gallery');
-let profiles = [];
-let currentCard = 0;
-//search markup
+// const gallery = document.getElementById('gallery');
+// let profiles = [];
+// let currentCard = 0;
+// //search markup
 
-const searchDiv = document.querySelector('.search-container');
-searchDiv.insertAdjacentHTML('beforeend', `
-    <form action="#" method="GET">
-        <input type="search" id="search-input"
-        class="search-input" placeholder="Search...">
-        <input type="submit" value="Search" id="search-submit" class="search-submit">
-    </form>
-`)
-const searchButton = document.querySelector('.search-submit');
-console.log(searchButton);
-const searchInput = document.querySelector('.search-input');
+// const searchDiv = document.querySelector('.search-container');
+// searchDiv.insertAdjacentHTML('beforeend', `
+//     <form action="#" method="GET">
+//         <input type="search" id="search-input"
+//         class="search-input" placeholder="Search...">
+//         <input type="submit" value="Search" id="search-submit" class="search-submit">
+//     </form>
+// `)
+// const searchButton = document.querySelector('.search-submit');
+// console.log(searchButton);
+// const searchInput = document.querySelector('.search-input');
 const employees = 'https://randomuser.me/api/?results=12&nat=us';
 
 /**
@@ -39,11 +39,9 @@ fetchData(employees)
         generateProfiles(data.results);
         generateProfileMods(data.results);
         callCard(data.results)
-        //profiles = data.results;
-       
+        profiles = data.results;
     }) 
-
-      
+  
 /**
  * Helper functions
  * generateProfile() function grabs employee data from API 
@@ -77,10 +75,7 @@ function generateProfileMods() {
    
     </div>
 </div> 
-    <div class="modal-btn-container">
-    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-    <button type="button" id="modal-next" class="modal-next btn">Next</button>
-    </div>
+  
 </div>
     `);
     const modal = document.querySelector('.modal-container');
@@ -110,49 +105,45 @@ function updateMod(emp) {
   
 }
 
-function renderCardItem(card) {
-    generateProfileMods();
-    updateMod();
+function renderCardItem(data) {
+    updateMod(data);
 }
 
 function renderCard() {
     const empProfile = profiles[currentCard];
     const html = renderCardItem(empProfile);
-
-    document.querySelector('.modal-container').innerHTML = html;
+    console.log(empProfile);
+    console.log(html);
+    document.querySelector('.modal-info-container').innerHTML = html;
 }
 
-function prevCard(card) {
+function prevCard() {
     //add conditional statement that disables the prevBttn 
         //if currentCard is the first index 
     if(currentCard > 0) {
-        //set attribute to disable true for previous button
-        document.querySelector('.modal-prev').setAttribute('disabled', true);
-        //remove attribute disable for next button
-        document.querySelector('.modal-next').remmoveAttribute('disabled');
+      
         currentCard -= 1
         renderCard();
     } 
 }
 
-function nextCard(card) {
+function nextCard() {
     if(currentCard < profiles.length - 1) {
-        document.querySelector('.modal-next').setAttribute('disabled', true);
-        document.querySelector('.modal-prev').removeAttribute('disabled');
         currentCard += 1
         renderCard();
-    }
+    } 
+
 }
 
 /**
  * Event listeners 
- * @param data JSONobject
+ * @para data JSONobject
 */
 function callCard(data){
     //an empty array to append ethe current list of employees for the search bar. 
     
-    profiles.push(data);
-    console.log(profiles);
+    //profiles.push(data);
+    //console.log(profiles);
     // let currentCard = 0;
     const prevBttn = document.querySelector('.modal-prev');
     const nextBttn = document.querySelector('.modal-next');
@@ -171,79 +162,24 @@ function callCard(data){
             if (modal.value === 0) {
                 prevBttn.setAttribute('disabled', true);
             }
+
+        prevBttn.addEventListener('click', (e) => {
+            modal.style.display = '';
+            prevCard();
+        });
+
+        nextBttn.addEventListener('click', (e) => {
+            modalInfo.style.display = '';
+            nextCard();
+            console.log('current button click is next');
             if(modal.value === 11) {
                 nextBttn.setAttribute('disabled', true);
             }
-        prevBttn.addEventListener('click', (e) => {
-            modalInfo.style.display = 'none';
-            console.log(prevCard(data));
-
-
-        
-                });
-
-        nextBttn.addEventListener('click', (e) => {
-           console.log(nextCard(data));
-                console.log('current button click is next');
-                });
+         });
         
         });
    
     }
 
-    searchButton.addEventListener('click', () => {
-        // const matches = [];
-        // const filter = searchInput.value.toLowerCase();
-        // console.log('search button clicked');
-        // for(let i = 0; i <= cards.length; i++) {
-        //     const employeeProf = cards[i];
-        //     //console.log(employeeProf);
-        //     const employee = employeeProf.querySelector('h3');
-        //     console.log(employee);
-        //     employeeProf.style.display = 'none';
-        //     if(employee.includes(filter)) {
-        //         matches.push(employeeProf);
-        //     }
-
-        // }
-    });
-// function prev(data){
-    
-    //start position
-    // if(i == 1) {
-    //     prevBttn.setAttribute('disabled', true);
-    //     nextBttn.setAttribute('disabled', false);
-    // } else {
-    //     i--;
-    //     return setNewCard();
-    // }
-// }
-
-// function next(data){    
-    // if(i == 12) {
-    //     nextBttn.setAttribute('disabled', true);
-    //     prevBttn.setAttribute('disabled', false);
-    // } else {
-    //     i++;
-    //     return setNewCard(card);
-    // }
-// }
-// function setNewCard(data){
-//     //change card 
-    
-//     console.log('new card');
-
-// }
-           //target the previous and next button 
-
-       //create an eventlister for 
-    //    prevBttn.addEventListener('click', () => {
-    //     prev(data);
-       
-
-    // });
-    //  nextBttn.addEventListener('click', (e) => {
-    //      next(data)
-    //  });
 }
 
