@@ -158,14 +158,11 @@ function callCard(data){
     const nextBttn = document.querySelector('.modal-next');
 
     const modal = document.querySelector('.modal-container');
-    const modalInfo = document.querySelector('.modal-info-container');
     const cards = document.querySelectorAll('.card');
     //give each class an click handler that displays a modal with employees information from API
     for(const [i, card] of cards.entries()) {
-        
         card.addEventListener('click', (e) => { 
-            // const cardValue = e.target.value;
-            // console.log(cardValue);
+          
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
@@ -184,7 +181,7 @@ function callCard(data){
         prevBttn.addEventListener('click', (e) => {
             modal.style.display = '';
             prevCard();
-            console.log(currentCard);
+            console.log(currentCard--);
 
         });
 
