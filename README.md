@@ -18,3 +18,5 @@ This app is built for the Awesome Startup company who has remote employees worki
 
 Formatted the employee birthdays using the tips from [Format Date - stackover flow](https://stackoverflow.com/questions/24214319/how-to-format-date-in-javascript-returned-from-ajax-request-to-c-sharp-web-api)
 
+Challenges in creating code: 
+- updating data in modal when the next/previous button has been clicked found this article which helped me create the functions for this app [how to create a click previous/next through JSON](https://www.sitepoint.com/community/t/how-to-create-a-click-previous-next-through-a-json-ajax-success-return/222526/3)
