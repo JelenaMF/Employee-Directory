@@ -16,7 +16,7 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: rgba(164, 204, 162, 0.9);
 }
 
 header {
@@ -94,6 +94,13 @@ header h1 {
     overflow: hidden;
 }
 
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
 .card-img {
     width: 95px;
     margin: 10px 15px auto 10px;

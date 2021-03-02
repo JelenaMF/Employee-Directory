@@ -116,8 +116,8 @@ function renderCardItem(data) {
 function renderCard() {
     const empProfile = profiles[currentCard];
     const html = renderCardItem(empProfile);
-    console.log(empProfile);
-    console.log(html);
+    // console.log(empProfile);
+    // console.log(html);
 }
 
 function prevCard() {
@@ -127,7 +127,9 @@ function prevCard() {
       
         currentCard -= 1
         renderCard();
-    } 
+    } else {
+        currentCard += 1
+    }
 }
 
 function nextCard() {
@@ -135,12 +137,16 @@ function nextCard() {
         currentCard += 1
         renderCard();
     } 
-
+    
 }
 
+function currentIndex(el) {
+    return [... el.parentElement.children].indexOf(el);
+   }
+   
 /**
  * Event listeners 
- * @para data JSONobject
+ * @para data JSONobject pushes data from an employee card 
 */
 function callCard(data){
     //an empty array to append ethe current list of employees for the search bar. 
@@ -154,31 +160,41 @@ function callCard(data){
     const modal = document.querySelector('.modal-container');
     const modalInfo = document.querySelector('.modal-info-container');
     const cards = document.querySelectorAll('.card');
+    //give each class an click handler that displays a modal with employees information from API
     for(const [i, card] of cards.entries()) {
         
         card.addEventListener('click', (e) => { 
+            // const cardValue = e.target.value;
+            // console.log(cardValue);
             modal.style.display = '';
             updateMod(data[i]);
             console.log(modal.value = i);
-            //console.log(renderCard());   
-            console.log(currentCard);
+    //stores the current employees card to the currentCard     
+          currentCard = currentIndex(card); 
+
             if (modal.value == 0) {
                 prevBttn.setAttribute('disabled', true);
-            }
+            } 
             if(modal.value == 11) {
+
                 nextBttn.setAttribute('disabled', true);
                 prevBttn.removeAttribute('disabled');
             }
+
         prevBttn.addEventListener('click', (e) => {
             modal.style.display = '';
             prevCard();
+            console.log(currentCard);
+
         });
 
         nextBttn.addEventListener('click', (e) => {
             modal.style.display = '';
+            currentCard;
             nextCard();
-            console.log('current button click is next');
-            
+            console.log(currentCard);
+
+
          });
         
         });
@@ -186,19 +202,20 @@ function callCard(data){
     }
 
     // searchButton.addEventListener('click', () => {
-    //     // const matches = [];
-    //      const filter = searchInput.value.toLowerCase();
+    //     const matches = [];
+    //     const filter = searchInput.value;
     //     // console.log('search button clicked');
-    //     for(let i = 0; i <= profiles.length; i++) {
+    //     for(let i = 0; i < profiles.length; i++) {
     //         const employeeProf = profiles[i];
     //         console.log(employeeProf);
-    //         const employee = employeeProf.querySelector('h3');
-    //         console.log(employee);
+    //         const employeeName = document.querySelector('#name').innerText.toLowerCase();
     //         employeeProf.style.display = 'none';
-    //         if(employee.includes(filter)) {
+    //         // console.log(employee);
+    //         if(employeeName.includes(filter)) {
     //             matches.push(employeeProf);
     //         }
-
+    //         generateProfiles(matches);
+    //         searchInput.value = '';
     //     }
     // });
 
