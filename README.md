@@ -11,14 +11,13 @@ This app is built for the Awesome Startup company who has remote employees worki
 - [X] reformat DOB 
 
 Meet exceeds goals that I wasn't able to complete 
-- [ ] create a functioning search field. 
+- [ ] create a functioning search field that finds matches from the input in the array 
 - [ ] preview button is disabled on the first employee profile
 - [ ] next button is disabled on the last employee profile
 - [ ] when next button is clicked the next employee profile is displayed
 - [ ] when previous button is clicked the previous employee profile is display
 - [ ] changing CSS styles
 - [ ] add some animation (personal preference) 
-- [ ] create a function search input that filters the employee list and finds a match. 
 
 
 Formatted the employee birthdays using the tips from [Format Date - stackover flow](https://stackoverflow.com/questions/24214319/how-to-format-date-in-javascript-returned-from-ajax-request-to-c-sharp-web-api)
