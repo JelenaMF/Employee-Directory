@@ -12,8 +12,8 @@ This app is built for the Awesome Startup company who has remote employees worki
 
 Meet exceeds goals that I wasn't able to complete 
 - [ ] create a functioning search field. 
-- [] preview button is disabled on the first employee profile
-- [] next button is disabled on the last employee profile
+- [ ] preview button is disabled on the first employee profile
+- [ ] next button is disabled on the last employee profile
 - [ ] when next button is clicked the next employee profile is displayed
 - [ ] when previous button is clicked the previous employee profile is display
 - [ ] changing CSS styles
