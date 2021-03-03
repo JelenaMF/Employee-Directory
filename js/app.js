@@ -3,6 +3,9 @@
  * 
 *********************************************/
 const gallery = document.getElementById('gallery');
+const prevBttn = document.querySelector('.modal-prev');
+const nextBttn = document.querySelector('.modal-next');
+
 let profiles = [];
 let currentCard = 0;
 //search markup
@@ -36,10 +39,12 @@ async function fetchData(url){
 //create a fetch function that fetches employees parsing it to json 
 fetchData(employees) 
         .then(data => {
-        generateProfiles(data.results);
-        generateProfileMods(data.results);
-        callCard(data.results)
+        const employees = data.results;
+        generateProfiles(employees);
+        generateProfileMods(employees);
+        callCard(employees);
         profiles = data.results;
+        browseEmp(employees);
     }) 
   
 /**
@@ -108,97 +113,72 @@ function updateMod(emp) {
   
 }
 
-function renderCardItem(data) {
-    updateMod(data);
-    
-}
+function browseEmp(data, index) {
+    const modal = document.querySelector('.modal');
+    const nextBttn = document.querySelector('.modal-next');
+    const prevBttn = document.querySelector('.modal-prev');
+    const cards = document.querySelectorAll('.card');
 
-function renderCard() {
-    const empProfile = profiles[currentCard];
-    const html = renderCardItem(empProfile);
-    // console.log(empProfile);
-    // console.log(html);
-}
-
-function prevCard() {
-    //add conditional statement that disables the prevBttn 
-        //if currentCard is the first index 
-    if(currentCard > 0) {
+    for(const [i, card] of cards.entries()) {
+        card.addEventListener('click', (e) => { 
+            index = data.indexOf(data[i]);
+        });
       
-        currentCard -= 1
-        renderCard();
-    } else {
-        currentCard += 1
     }
-}
-
-function nextCard() {
-    if(currentCard < profiles.length - 1) {
-        currentCard += 1
-        renderCard();
-    } 
     
+    nextBttn.addEventListener('click', () => {
+        index++ 
+          if(index == 11) {
+            nextBttn.setAttribute('disabled', true);
+        }
+        if(index >= data.length) {
+            index = -1;
+        } if(index <= data.length) {
+            console.log(index);
+            updateMod(data[index]);
+        }
+        //disable next button at the last modal
+       
+    });
+  
+    prevBttn.addEventListener('click', () => {
+        index--
+        if(index == 0) {
+            prevBttn.setAttribute('disabled', true);
+        }
+        if(index <= -1 ) {
+            index = -1;
+        } if(index <= data.length) {
+            console.log(index);
+            updateMod(data[index]);
+        }
+  
+    });
 }
 
-function currentIndex(el) {
-    return [... el.parentElement.children].indexOf(el);
-   }
    
 /**
  * Event listeners 
  * @para data JSONobject pushes data from an employee card 
 */
-function callCard(data){
-    //an empty array to append ethe current list of employees for the search bar. 
-    
+function callCard(data){    
     profiles.push(data);
     console.log(profiles);
-    // let currentCard = 0;
-    const prevBttn = document.querySelector('.modal-prev');
-    const nextBttn = document.querySelector('.modal-next');
-
     const modal = document.querySelector('.modal-container');
     const cards = document.querySelectorAll('.card');
     //give each class an click handler that displays a modal with employees information from API
     for(const [i, card] of cards.entries()) {
         card.addEventListener('click', (e) => { 
-          
             modal.style.display = '';
             updateMod(data[i]);
-            console.log(modal.value = i);
-    //stores the current employees card to the currentCard     
-          currentCard = currentIndex(card); 
-
-            if (modal.value == 0) {
-                prevBttn.setAttribute('disabled', true);
-            } 
-            if(modal.value == 11) {
-
-                nextBttn.setAttribute('disabled', true);
-                prevBttn.removeAttribute('disabled');
-            }
-
-        prevBttn.addEventListener('click', (e) => {
-            modal.style.display = '';
-            prevCard();
-            console.log(currentCard--);
-
         });
 
-        nextBttn.addEventListener('click', (e) => {
-            modal.style.display = '';
-            currentCard;
-            nextCard();
-            console.log(currentCard);
-
-
-         });
-        
-        });
-   
     }
-
-    // searchButton.addEventListener('click', () => {
+   
+}
+//create a function that will handle the searchButton responses in the helper
+//function section 
+ // searchButton.addEventListener('click', () => {
     //     const matches = [];
     //     const filter = searchInput.value;
     //     // console.log('search button clicked');
@@ -215,6 +195,3 @@ function callCard(data){
     //         searchInput.value = '';
     //     }
     // });
-
-}
-
