@@ -1,5 +1,5 @@
 /**
- * Global Variables for creating DOM elements 
+ * Global Variables 
  * 
 *********************************************/
 const gallery = document.getElementById('gallery');
@@ -8,7 +8,7 @@ const employees = 'https://randomuser.me/api/?results=12&nat=us';
 
 /**
  * Fetch functions
- * fetches the API data 
+ * fetches the API data and checks for errors 
 */
 async function fetchData(url){
     try {
@@ -31,7 +31,11 @@ fetchData(employees)
   
 /**
  * Helper functions
- * generateProfile() function grabs employee data from API 
+ * generateProfile() function grabs employee data from API and creates a card
+ * for them.
+ * generateProfileMod() function creates a modal for the employees 
+ * updatemod() function will update the modals of the employee which will be used
+ * in the generatProfileMod function 
  * 
  * @para data JSON object
  * @para emp JSON object
@@ -94,11 +98,11 @@ function updateMod(emp) {
    
 /**
  * Event listeners 
- * @para data JSONobject pushes data from an employee card 
+ * @para data JSONobject pushes data from an employee card to the modal
+ * that will display a modal with the updates once the card is clicked 
 */
 function callCard(data){    
-    // profiles.push(data);
-    // console.log(profiles);
+  
     const modal = document.querySelector('.modal-container');
     const cards = document.querySelectorAll('.card');
     //give each class an click handler that displays a modal with employees information from API
