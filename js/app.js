@@ -3,24 +3,7 @@
  * 
 *********************************************/
 const gallery = document.getElementById('gallery');
-const prevBttn = document.querySelector('.modal-prev');
-const nextBttn = document.querySelector('.modal-next');
 
-let profiles = [];
-let currentCard = 0;
-//search markup
-
-const searchDiv = document.querySelector('.search-container');
-searchDiv.insertAdjacentHTML('beforeend', `
-    <form action="#" method="GET">
-        <input type="search" id="search-input"
-        class="search-input" placeholder="Search...">
-        <input type="submit" value="Search" id="search-submit" class="search-submit">
-    </form>
-`)
-const searchButton = document.querySelector('.search-submit');
-console.log(searchButton);
-const searchInput = document.querySelector('.search-input');
 const employees = 'https://randomuser.me/api/?results=12&nat=us';
 
 /**
@@ -43,8 +26,7 @@ fetchData(employees)
         generateProfiles(employees);
         generateProfileMods(employees);
         callCard(employees);
-        profiles = data.results;
-        browseEmp(employees);
+    
     }) 
   
 /**
@@ -80,10 +62,7 @@ function generateProfileMods() {
    
     </div>
 </div> 
-    <div class="modal-btn-container">
-    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-    <button type="button" id="modal-next" class="modal-next btn">Next</button>
-    </div>
+
 </div>
     `);
     const modal = document.querySelector('.modal-container');
@@ -112,58 +91,14 @@ function updateMod(emp) {
     `)
   
 }
-
-function browseEmp(data, index) {
-    const modal = document.querySelector('.modal');
-    const nextBttn = document.querySelector('.modal-next');
-    const prevBttn = document.querySelector('.modal-prev');
-    const cards = document.querySelectorAll('.card');
-
-    for(const [i, card] of cards.entries()) {
-        card.addEventListener('click', (e) => { 
-            index = data.indexOf(data[i]);
-        });
-      
-    }
-    
-    nextBttn.addEventListener('click', () => {
-        index++ 
-          if(index == 11) {
-            nextBttn.setAttribute('disabled', true);
-        }
-        if(index >= data.length) {
-            index = -1;
-        } if(index <= data.length) {
-            console.log(index);
-            updateMod(data[index]);
-        }
-        //disable next button at the last modal
-       
-    });
-  
-    prevBttn.addEventListener('click', () => {
-        index--
-        if(index == 0) {
-            prevBttn.setAttribute('disabled', true);
-        }
-        if(index <= -1 ) {
-            index = -1;
-        } if(index <= data.length) {
-            console.log(index);
-            updateMod(data[index]);
-        }
-  
-    });
-}
-
    
 /**
  * Event listeners 
  * @para data JSONobject pushes data from an employee card 
 */
 function callCard(data){    
-    profiles.push(data);
-    console.log(profiles);
+    // profiles.push(data);
+    // console.log(profiles);
     const modal = document.querySelector('.modal-container');
     const cards = document.querySelectorAll('.card');
     //give each class an click handler that displays a modal with employees information from API
@@ -171,27 +106,8 @@ function callCard(data){
         card.addEventListener('click', (e) => { 
             modal.style.display = '';
             updateMod(data[i]);
+           
         });
 
     }
-   
 }
-//create a function that will handle the searchButton responses in the helper
-//function section 
- // searchButton.addEventListener('click', () => {
-    //     const matches = [];
-    //     const filter = searchInput.value;
-    //     // console.log('search button clicked');
-    //     for(let i = 0; i < profiles.length; i++) {
-    //         const employeeProf = profiles[i];
-    //         console.log(employeeProf);
-    //         const employeeName = document.querySelector('#name').innerText.toLowerCase();
-    //         employeeProf.style.display = 'none';
-    //         // console.log(employee);
-    //         if(employeeName.includes(filter)) {
-    //             matches.push(employeeProf);
-    //         }
-    //         generateProfiles(matches);
-    //         searchInput.value = '';
-    //     }
-    // });
