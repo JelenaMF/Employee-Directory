@@ -1,14 +1,31 @@
 /**
- * Global Variables 
+ * Global Variables for creating DOM elements 
  * 
 *********************************************/
 const gallery = document.getElementById('gallery');
+const prevBttn = document.querySelector('.modal-prev');
+const nextBttn = document.querySelector('.modal-next');
 
+let profiles = [];
+let currentCard = 0;
+//search markup
+
+const searchDiv = document.querySelector('.search-container');
+searchDiv.insertAdjacentHTML('beforeend', `
+    <form action="#" method="GET">
+        <input type="search" id="search-input"
+        class="search-input" placeholder="Search...">
+        <input type="submit" value="Search" id="search-submit" class="search-submit">
+    </form>
+`)
+const searchButton = document.querySelector('.search-submit');
+console.log(searchButton);
+const searchInput = document.querySelector('.search-input');
 const employees = 'https://randomuser.me/api/?results=12&nat=us';
 
 /**
  * Fetch functions
- * fetches the API data and checks for errors 
+ * fetches the API data 
 */
 async function fetchData(url){
     try {
@@ -26,16 +43,13 @@ fetchData(employees)
         generateProfiles(employees);
         generateProfileMods(employees);
         callCard(employees);
-    
+        profiles = data.results;
+        browseEmp(employees);
     }) 
   
 /**
  * Helper functions
- * generateProfile() function grabs employee data from API and creates a card
- * for them.
- * generateProfileMod() function creates a modal for the employees 
- * updatemod() function will update the modals of the employee which will be used
- * in the generatProfileMod function 
+ * generateProfile() function grabs employee data from API 
  * 
  * @para data JSON object
  * @para emp JSON object
@@ -66,7 +80,10 @@ function generateProfileMods() {
    
     </div>
 </div> 
-
+    <div class="modal-btn-container">
+    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+    </div>
 </div>
     `);
     const modal = document.querySelector('.modal-container');
@@ -95,14 +112,68 @@ function updateMod(emp) {
     `)
   
 }
+
+function browseEmp(data, index) {
+    const modal = document.querySelector('.modal');
+    const nextBttn = document.querySelector('.modal-next');
+    const prevBttn = document.querySelector('.modal-prev');
+    const cards = document.querySelectorAll('.card');
+
+    for(const [i, card] of cards.entries()) {
+        card.addEventListener('click', (e) => { 
+            index = data.indexOf(data[i]);
+            if(index == 0) {
+                prevBttn.style.display = 'none';  
+            } 
+            if(index == 11) {
+                nextBttn.style.display = 'none';
+            }
+           
+        });
+      
+    }
+    
+    nextBttn.addEventListener('click', () => {
+        prevBttn.style.display = 'block';
+        index++ 
+
+         if(index >= 11) {
+            nextBttn.style.display = 'none';
+
+        } if(index <= 11) {
+            console.log(index);
+            updateMod(data[index]);
+        }
+        //disable next button at the last modal
+       
+    });
+
+   
+    prevBttn.addEventListener('click', () => {
+        index--
+        nextBttn.style.display = '';
+
+        if(index <= 0 ) {
+            prevBttn.style.display = 'none';
+
+            index = 0;
+          
+        } if(index >= 0) {
+            console.log(index);
+            updateMod(data[index]);
+        }
+  
+    });
+}
+
    
 /**
  * Event listeners 
- * @para data JSONobject pushes data from an employee card to the modal
- * that will display a modal with the updates once the card is clicked 
+ * @para data JSONobject pushes data from an employee card 
 */
 function callCard(data){    
-  
+    profiles.push(data);
+    console.log(profiles);
     const modal = document.querySelector('.modal-container');
     const cards = document.querySelectorAll('.card');
     //give each class an click handler that displays a modal with employees information from API
@@ -110,8 +181,27 @@ function callCard(data){
         card.addEventListener('click', (e) => { 
             modal.style.display = '';
             updateMod(data[i]);
-           
         });
 
     }
+   
 }
+//create a function that will handle the searchButton responses in the helper
+//function section 
+ // searchButton.addEventListener('click', () => {
+    //     const matches = [];
+    //     const filter = searchInput.value;
+    //     // console.log('search button clicked');
+    //     for(let i = 0; i < profiles.length; i++) {
+    //         const employeeProf = profiles[i];
+    //         console.log(employeeProf);
+    //         const employeeName = document.querySelector('#name').innerText.toLowerCase();
+    //         employeeProf.style.display = 'none';
+    //         // console.log(employee);
+    //         if(employeeName.includes(filter)) {
+    //             matches.push(employeeProf);
+    //         }
+    //         generateProfiles(matches);
+    //         searchInput.value = '';
+    //     }
+    // });
