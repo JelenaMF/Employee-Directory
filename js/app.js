@@ -3,24 +3,11 @@
  * 
 *********************************************/
 const gallery = document.getElementById('gallery');
-const prevBttn = document.querySelector('.modal-prev');
-const nextBttn = document.querySelector('.modal-next');
+
 
 let profiles = [];
 let currentCard = 0;
-//search markup
 
-const searchDiv = document.querySelector('.search-container');
-searchDiv.insertAdjacentHTML('beforeend', `
-    <form action="#" method="GET">
-        <input type="search" id="search-input"
-        class="search-input" placeholder="Search...">
-        <input type="submit" value="Search" id="search-submit" class="search-submit">
-    </form>
-`)
-const searchButton = document.querySelector('.search-submit');
-console.log(searchButton);
-const searchInput = document.querySelector('.search-input');
 const employees = 'https://randomuser.me/api/?results=12&nat=us';
 
 /**
@@ -43,8 +30,9 @@ fetchData(employees)
         generateProfiles(employees);
         generateProfileMods(employees);
         callCard(employees);
-        profiles = data.results;
+        profiles = employees;
         browseEmp(employees);
+        searchEmp(employees);
     }) 
   
 /**
@@ -113,8 +101,45 @@ function updateMod(emp) {
   
 }
 
+//create a function that will handle the searchButton responses in the helper
+//function section 
+function searchEmp(emp) {
+    const searchDiv = document.querySelector('.search-container');
+    searchDiv.insertAdjacentHTML('beforeend', `
+        <form action="#" method="GET">
+            <input type="search" id="search-input"
+            class="search-input" placeholder="Search...">
+            <input type="submit" value="Search" id="search-submit" class="search-submit">
+        </form>
+    `)
+    const searchButton = document.querySelector('.search-submit');
+    console.log(searchButton);
+    const searchInput = document.querySelector('.search-input')
+    const employeeNames = document.querySelectorAll('#name');
+
+    employeeNames.forEach(name => {
+        const card = name.parentElement.parentElement;
+        const cards = document.querySelectorAll('.card');
+
+        searchInput.addEventListener('keyup', (e) => {
+            let inputValue = e.target.value.toLowerCase();
+
+            if(name.textContent.toLowerCase().includes(inputValue)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        searchButton.addEventListener('click', () => {
+            card.style.display = '';
+            searchInput.value = '';
+            searchInput.focus();
+        });
+        
+    })
+}
+
 function browseEmp(data, index) {
-    const modal = document.querySelector('.modal');
     const nextBttn = document.querySelector('.modal-next');
     const prevBttn = document.querySelector('.modal-prev');
     const cards = document.querySelectorAll('.card');
@@ -141,10 +166,8 @@ function browseEmp(data, index) {
             nextBttn.style.display = 'none';
 
         } if(index <= 11) {
-            console.log(index);
             updateMod(data[index]);
         }
-        //disable next button at the last modal
        
     });
 
@@ -159,7 +182,6 @@ function browseEmp(data, index) {
             index = 0;
           
         } if(index >= 0) {
-            console.log(index);
             updateMod(data[index]);
         }
   
@@ -173,7 +195,6 @@ function browseEmp(data, index) {
 */
 function callCard(data){    
     profiles.push(data);
-    console.log(profiles);
     const modal = document.querySelector('.modal-container');
     const cards = document.querySelectorAll('.card');
     //give each class an click handler that displays a modal with employees information from API
@@ -186,22 +207,3 @@ function callCard(data){
     }
    
 }
-//create a function that will handle the searchButton responses in the helper
-//function section 
- // searchButton.addEventListener('click', () => {
-    //     const matches = [];
-    //     const filter = searchInput.value;
-    //     // console.log('search button clicked');
-    //     for(let i = 0; i < profiles.length; i++) {
-    //         const employeeProf = profiles[i];
-    //         console.log(employeeProf);
-    //         const employeeName = document.querySelector('#name').innerText.toLowerCase();
-    //         employeeProf.style.display = 'none';
-    //         // console.log(employee);
-    //         if(employeeName.includes(filter)) {
-    //             matches.push(employeeProf);
-    //         }
-    //         generateProfiles(matches);
-    //         searchInput.value = '';
-    //     }
-    // });
