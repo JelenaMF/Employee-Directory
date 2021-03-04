@@ -113,7 +113,6 @@ function searchEmp(emp) {
         </form>
     `)
     const searchButton = document.querySelector('.search-submit');
-    console.log(searchButton);
     const searchInput = document.querySelector('.search-input')
     const employeeNames = document.querySelectorAll('#name');
 
