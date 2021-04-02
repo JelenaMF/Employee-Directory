@@ -102,7 +102,7 @@ function updateMod(emp) {
 }
 
 //create a function that will handle the searchButton responses in the helper
-//function section 
+
 function searchEmp(emp) {
     const searchDiv = document.querySelector('.search-container');
     searchDiv.insertAdjacentHTML('beforeend', `
@@ -118,8 +118,8 @@ function searchEmp(emp) {
 
     employeeNames.forEach(name => {
         const card = name.parentElement.parentElement;
-        const cards = document.querySelectorAll('.card');
-
+        const noResultsP = document.createElement('p');
+        gallery.appendChild(noResultsP);
         searchInput.addEventListener('keyup', (e) => {
             let inputValue = e.target.value.toLowerCase();
 
@@ -127,6 +127,10 @@ function searchEmp(emp) {
                 card.style.display = '';
             } else {
                 card.style.display = 'none';
+                //displays the message but all the time during this condition 
+                noResultsP.innerText = 'No Employees Found';
+                console.log(noResultsP);
+
             }
         });
         searchButton.addEventListener('click', () => {
@@ -142,7 +146,6 @@ function browseEmp(data, index) {
     const nextBttn = document.querySelector('.modal-next');
     const prevBttn = document.querySelector('.modal-prev');
     const cards = document.querySelectorAll('.card');
-
     for(const [i, card] of cards.entries()) {
         card.addEventListener('click', (e) => { 
             index = data.indexOf(data[i]);
@@ -151,6 +154,7 @@ function browseEmp(data, index) {
             } 
             if(index == 11) {
                 nextBttn.style.display = 'none';
+     
             }
            
         });
