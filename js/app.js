@@ -52,7 +52,7 @@ function generateProfiles(data) {
             <div class="card-info-container">
                 <h3 id="name" class="card-name cap">${data.name.first} ${data.name.last}</h3>
                 <p class="card-text">${data.email}</p>
-                <p class="card-text cap">${data.location.city}, ${data.location.state} </p>
+                <p class="card-text cap">${data.location.city}, ${data.location.state}</p>
             </div>
         </div>`).join('');
     gallery.insertAdjacentHTML('beforeend', profile);
