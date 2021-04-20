@@ -115,11 +115,10 @@ function searchEmp(emp) {
     const searchButton = document.querySelector('.search-submit');
     const searchInput = document.querySelector('.search-input')
     const employeeNames = document.querySelectorAll('#name');
-
+    const noResultsP = document.createElement('p');
     employeeNames.forEach(name => {
         const card = name.parentElement.parentElement;
-        const noResultsP = document.createElement('p');
-        gallery.appendChild(noResultsP);
+
         searchInput.addEventListener('keyup', (e) => {
             let inputValue = e.target.value.toLowerCase();
 
@@ -130,6 +129,7 @@ function searchEmp(emp) {
                 //displays the message but all the time during this condition 
                 noResultsP.innerText = 'No Employees Found';
                 console.log(noResultsP);
+                gallery.appendChild(noResultsP);
 
             }
         });
