@@ -105,6 +105,10 @@ function updateMod(emp) {
 
 function searchEmp(emp) {
     const searchDiv = document.querySelector('.search-container');
+    const noResults = document.createElement('h3')
+    console.log(noResults)
+    noResults.textContent = '';
+    gallery.append(noResults);
     searchDiv.insertAdjacentHTML('beforeend', `
         <form action="#" method="GET">
             <input type="search" id="search-input"
@@ -114,26 +118,37 @@ function searchEmp(emp) {
     `)
     const searchButton = document.querySelector('.search-submit');
     const searchInput = document.querySelector('.search-input')
+    searchInput.focus();
+    searchButton.addEventListener('focus', (e) => searchButton.classList.add("focus"));
+    searchButton.addEventListener('blur', (e) => {
+        const active = document.querySelector('.focus');
+        if(active){
+            searchButton.classList.remove("focus");
+        }
+    });
     const employeeNames = document.querySelectorAll('#name');
-    const noResultsP = document.createElement('p');
+    
+
     employeeNames.forEach(name => {
         const card = name.parentElement.parentElement;
 
         searchInput.addEventListener('keyup', (e) => {
             let inputValue = e.target.value.toLowerCase();
-
+            noResults.textContent = '';
+            document.querySelectorAll('')
             if(name.textContent.toLowerCase().includes(inputValue)) {
                 card.style.display = '';
+                noResults.textContent = '';
             } else {
                 card.style.display = 'none';
-                //displays the message but all the time during this condition 
-                noResultsP.innerText = 'No Employees Found';
-                console.log(noResultsP);
-                gallery.appendChild(noResultsP);
+                //displays the message but all the time during this condition '
+                return noResults.textContent = "no matches";
 
-            }
+            } 
+
         });
         searchButton.addEventListener('click', () => {
+            noResults.textContent = '';
             card.style.display = '';
             searchInput.value = '';
             searchInput.focus();
