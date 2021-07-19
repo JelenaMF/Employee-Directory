@@ -96,7 +96,7 @@ function updateMod(emp) {
         <hr>
             <p class="modal-text">${emp.location.street.number} ${emp.location.street.name} 
             ${emp.location.city} ${emp.location.state}</p>
-            <p class="modal-text">Birhday: ${mmddyy}</p>
+            <p class="modal-text">Birthday: ${mmddyy}</p>
     `)
   
 }
