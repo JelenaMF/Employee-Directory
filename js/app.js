@@ -101,12 +101,11 @@ function updateMod(emp) {
   
 }
 
-//create a function that will handle the searchButton responses in the helper
+//create a function that will handle the searchButton responses in the helper functions 
 
 function searchEmp(emp) {
     const searchDiv = document.querySelector('.search-container');
     const noResults = document.createElement('h3')
-    console.log(noResults)
     noResults.textContent = '';
     gallery.append(noResults);
     searchDiv.insertAdjacentHTML('beforeend', `
